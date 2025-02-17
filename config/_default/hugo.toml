@@ -1,9 +1,5 @@
-# -- Site Configuration --
-# Refer to the theme docs for more details about each of these parameters.
-# https://blowfish.page/docs/getting-started/
 
-# theme = "blowfish" # UNCOMMENT THIS LINE
-# baseURL = "https://your_domain.com/"
+baseURL = "https://ilinyhgleb.github.io/"
 defaultContentLanguage = "ru"
 
 pluralizeListTitles = "true" # hugo function useful for non-english languages, find out more in  https://gohugo.io/getting-started/configuration/#pluralizelisttitles
@@ -23,12 +19,6 @@ enableEmoji = true
 
 [imaging]
   anchor = 'Center'
-
-# [taxonomies]
-#   tag = "tags"
-#   category = "categories"
-#   author = "authors"
-#   series = "series"
 
 [sitemap]
   changefreq = 'daily'
@@ -51,8 +41,6 @@ enableEmoji = true
         weight = 100
 
     [[related.indices]]
-[[module.import]]
-  path = 'github.com/nunocoracao/blowfish'
         name = "series"
         weight = 50
 
