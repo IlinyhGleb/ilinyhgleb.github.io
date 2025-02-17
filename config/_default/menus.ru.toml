@@ -1,0 +1,45 @@
+
+[[main]]
+ name = "Посты"
+ pageRef = "posts"
+ weight = 10
+
+[[main]]
+ name = "Дисциплины"
+ pageRef = "series"
+ weight = 20
+
+
+[[main]]
+ name = "Информатика"
+ parent = "Дисциплины"
+ pageRef = "series/Информатика"
+ weight = 10
+
+[[main]]
+ name = "Механика"
+ parent = "Дисциплины"
+ pageRef = "series/Механика"
+ weight = 20
+
+[[subnavigation]]  # меню второго уровня
+ name = "Github"
+ pre = "github"
+ pageRef = "github.com"
+ weight = 20
+
+[[main]]
+ name = "Категории"
+ pageRef = "categories"
+ weight = 30
+
+[[footer]]
+  name = "Тэги"
+  pageRef = "tags"
+  weight = 10
+
+[[footer]]
+  name = "Категории"
+  pageRef = "categories"
+  weight = 20
+

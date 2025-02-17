@@ -1,0 +1,45 @@
+
+[[main]]
+ name = "Posts"
+ pageRef = "posts"
+ weight = 10
+
+[[main]]
+ name = "Series"
+ pageRef = "series"
+ weight = 20
+
+
+[[main]]
+ name = "Informatics"
+ parent = "Series"
+ pageRef = "series/Informatics"
+ weight = 10
+
+[[main]]
+ name = "Mechanics"
+ parent = "Series"
+ pageRef = "series/Mechanics"
+ weight = 20
+
+[[subnavigation]]  # меню второго уровня
+ name = "Github"
+ pre = "github"
+ pageRef = "github.com"
+ weight = 20
+
+[[main]]
+ name = "Categories"
+ pageRef = "categories"
+ weight = 30
+
+[[footer]]
+  name = "Tags"
+  pageRef = "tags"
+  weight = 10
+
+[[footer]]
+  name = "Categories"
+  pageRef = "categories"
+  weight = 20
+

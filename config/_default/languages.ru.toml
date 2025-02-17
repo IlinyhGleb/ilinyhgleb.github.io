@@ -1,0 +1,16 @@
+
+disabled = false
+languageCode = "ru"
+languageName = "Russian"
+weight = 1
+title = "Блог"
+
+[params]
+  displayName = "RU"
+  isoCode = "ru"
+  rtl = false
+  dateFormat = "13.02.2006"
+
+[params.author]
+  name = "Глеб Ильиных"
+  email = "gleb@ilinyh.ru"
