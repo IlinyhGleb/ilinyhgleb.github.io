@@ -1,0 +1,143 @@
+baseURL: 'https://ilinyhgleb.github.io/'
+languageCode: 'ru-ru'
+
+defaultContentLanguage: ru
+defaultContentLanguageInSubdir: true
+languages:
+  ru:
+    languageCode: ru-RU
+    languageName: Русский
+    contentDir: 'content/ru'
+    weight: 1
+
+    menus:
+      main:
+        - name: Курсы
+          pageRef: /courses/
+          weight: 10
+        - name: Тэги
+          pageRef: /tags/
+          weight: 20
+        - name: Посты
+          pageRef: /posts/
+          weight: 30
+  # en:
+  #   languageCode: en-US
+  #   languageName: English
+  #   contentDir: 'content/en'
+  #   weight: 2
+  #
+  #   menus:
+  #     main:
+  #       - name: Courses
+  #         pageRef: /courses/
+  #         weight: 10
+  #       - name: Tags
+  #         pageRef: /tags/
+  #         weight: 20
+  #       - name: Posts
+  #         pageRef: /posts/
+  #         weight: 30
+
+title: 'Блог Ильиных Глеба'
+theme: 'papermod'
+
+markup:
+  goldmark:
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block: [['\[', '\]'], ['$$', '$$']]
+          inline: [['\(', '\)']]
+
+params:
+  mainSections:
+    - posts
+  # title: ExamplseSite
+  # description: "ExampleSite description"
+  # keywords: [Blog, Courses, PaperMod]
+  author: Ilinyh Gleb
+
+  math: true
+  DateFormat: "2 January 2006"
+  defaultTheme: auto
+  disableThemeToggle: false
+
+  ShowReadingTime: false
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: false
+  ShowRssButtonInSectionTermList: false
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: false
+
+  # label:
+  #   text: "ИГ"
+  #   icon: /apple-touch-icon.png
+  #   iconHeight: 35
+
+  # assets:
+  #   # disableHLJS: true # to disable highlight.js
+  #   # disableFingerprinting: true
+  #   favicon: "<link / abs url>"
+  #   favicon16x16: "<link / abs url>"
+  #   favicon32x32: "<link / abs url>"
+  #   apple_touch_icon: "<link / abs url>"
+  #   safari_pinned_tab: "<link / abs url>"
+
+  # profile-mode
+  profileMode:
+    enabled: true
+    title: " "
+    subtitle: ""
+    buttons:
+      - name: Курсы
+        url: courses
+      - name: Посты
+        url: posts
+      - name: Тэги
+        url: tags
+
+  # socialIcons:
+  #   - name: stackoverflow
+  #     url: "https://stackoverflow.com"
+  #   - name: github
+  #     url: "https://github.com/"
+
+  # analytics:
+  #   google:
+  #     SiteVerificationTag: "XYZabc"
+  #   bing:
+  #     SiteVerificationTag: "XYZabc"
+    # yandex:
+    #   SiteVerificationTag: "XYZabc"
+
+  cover:
+    hidden: true # hide everywhere but not in structured data
+    hiddenInList: true # hide on list pages and home
+    hiddenInSingle: true # hide on single page
+
+  # editPost:
+  #   URL: "https://github.com/<path_to_repo>/content"
+  #   Text: "Suggest Changes" # edit text
+  #   appendFilePath: true # to append file path to Edit link
+
+  cover:
+    hidden: true # only hide on current single page
+    hiddenInList: true # hide on list pages and home
+    hiddenInSingle: true # hide on single page
+
+taxonomies:
+  course: courses
+  category: categories
+  tag: tags
+
