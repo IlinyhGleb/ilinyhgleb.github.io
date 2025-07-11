@@ -63,6 +63,9 @@ jobs:
       - name: Fix MIME types for HTML files
         run: |
           find ./public -type f -name "*.html" -exec sed -i '1s/^<?xml /<?xml mime=text\/html /' {} \; || true
+      - name: Add .htaccess for MIME types
+        run: |
+          echo "AddType text/html .html" > ./public/.htaccess
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
