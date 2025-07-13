@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="92.852074mm"
+   height="27.613892mm"
+   viewBox="0 0 92.852072 27.613891"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <rect
+       x="14.753555"
+       y="82.12812"
+       width="152.2075"
+       height="15.491233"
+       id="rect7" />
+    <rect
+       x="95.977516"
+       y="-29.558294"
+       width="117.88543"
+       height="15.648508"
+       id="rect5" />
+    <rect
+       x="103.28015"
+       y="-33.731228"
+       width="132.14296"
+       height="39.295143"
+       id="rect4" />
+    <rect
+       x="102.93241"
+       y="136.3159"
+       width="325.52289"
+       height="113.68778"
+       id="rect1" />
+    <rect
+       x="102.93241"
+       y="136.3159"
+       width="325.52289"
+       height="113.68778"
+       id="rect10" />
+    <rect
+       x="102.93241"
+       y="136.3159"
+       width="325.52289"
+       height="113.68778"
+       id="rect15" />
+    <rect
+       x="102.93241"
+       y="136.3159"
+       width="325.52289"
+       height="113.68778"
+       id="rect20" />
+    <rect
+       x="102.93241"
+       y="136.3159"
+       width="325.52289"
+       height="113.68778"
+       id="rect25" />
+    <rect
+       x="14.753555"
+       y="82.12812"
+       width="152.2075"
+       height="15.491233"
+       id="rect7-1" />
+    <rect
+       x="14.753555"
+       y="82.12812"
+       width="57.695099"
+       height="39.356049"
+       id="rect7-4" />
+    <rect
+       x="14.753555"
+       y="82.12812"
+       width="94.087196"
+       height="51.650677"
+       id="rect7-4-6" />
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-12.266017,-33.441869)">
+    <rect
+       style="fill:none;stroke:#cc0000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3"
+       width="15.818737"
+       height="4.4702539"
+       x="26.879595"
+       y="35.50378"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text25"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect25);display:inline;fill:#000000"><tspan
+         x="102.93164"
+         y="147.09256"
+         id="tspan4"><tspan
+   style="fill:#00ffff"
+   id="tspan1">def</tspan> <tspan
+   style="fill:#00ff00"
+   id="tspan2">f</tspan><tspan
+   style="fill:#ffffff"
+   id="tspan3">(x, y):
+</tspan></tspan><tspan
+         x="102.93164"
+         y="162.09256"
+         id="tspan11"><tspan
+           style="fill:#ffffff"
+           id="tspan5">   </tspan><tspan
+           style="fill:#ffff00"
+           id="tspan6"> </tspan><tspan
+           style="fill:#ffdd55"
+           id="tspan7">&quot;&quot;&quot;</tspan><tspan
+           style="fill:#ffdd55"
+           id="tspan8">Считает значение функции </tspan><tspan
+           style="fill:#ffdd55"
+           id="tspan9">f(x, y)=x^a+y^b&quot;&quot;&quot;</tspan><tspan
+           style="fill:#ffffff"
+           id="tspan10">
+</tspan></tspan><tspan
+         x="102.93164"
+         y="177.09256"
+         id="tspan13"><tspan
+           style="fill:#ffffff"
+           id="tspan12">    a = 5
+</tspan></tspan><tspan
+         x="102.93164"
+         y="192.09256"
+         id="tspan15"><tspan
+   style="fill:#ffffff"
+   id="tspan14">    b = 3</tspan>
+</tspan><tspan
+         x="102.93164"
+         y="207.09256"
+         id="tspan20">    <tspan
+   style="fill:#00ffff"
+   id="tspan16">return</tspan> <tspan
+   style="fill:#ffffff"
+   id="tspan17">x**a </tspan><tspan
+   style="fill:#ff0000"
+   id="tspan18">+</tspan><tspan
+   style="fill:#ffffff"
+   id="tspan19"> y**b</tspan></tspan></text>
+    <path
+       style="fill:#800000;stroke:#cc0000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 42.609442,35.541896 7.293621,-1.15878"
+       id="path4" />
+    <path
+       style="fill:none;stroke:#cc0000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 30.135499,44.033528 h -3.312267 v 8.004646 l 3.220259,-0.023"
+       id="path7" />
+    <path
+       style="fill:none;stroke:#cc0000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 101.69783,44.312801 3.22026,4.51e-4 v -4.556515 l -3.22026,0.023"
+       id="path7-8" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,25.607519,35.624896)"
+       id="text7"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect7);display:inline;fill:#cc0000;fill-opacity:1;stroke:none;stroke-width:0.755906;stroke-dasharray:none;stroke-opacity:1"><tspan
+         x="14.753906"
+         y="92.905057"
+         id="tspan21">возвращаемое значение</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,46.635122,11.186005)"
+       id="text7-3"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect7-1);display:inline;fill:#cc0000;fill-opacity:1;stroke:none;stroke-width:0.755906;stroke-dasharray:none;stroke-opacity:1"><tspan
+         x="14.753906"
+         y="92.905057"
+         id="tspan22">сигнатура функции</tspan></text>
+    <path
+       style="fill:none;stroke:#b90000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 29.892806,53.663037 v 3.312267 h 29.050709 l 6.36e-4,-3.311748"
+       id="path7-7" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,6.3273853,21.473945)"
+       id="text7-4"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:end;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect7-4);display:inline;fill:#cc0000;fill-opacity:1;stroke:none;stroke-width:0.755906;stroke-dasharray:none;stroke-opacity:1"
+       x="-96.861191"
+       y="0"><tspan
+         x="46.589233"
+         y="92.905057"
+         id="tspan23">тело </tspan><tspan
+         x="23.621216"
+         y="107.90506"
+         id="tspan24">функции</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,75.569706,22.416167)"
+       id="text7-4-6"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect7-4-6);display:inline;fill:#cc0000;fill-opacity:1;stroke:none;stroke-width:0.755906;stroke-dasharray:none;stroke-opacity:1"><tspan
+         x="14.753906"
+         y="92.905057"
+         id="tspan25">описание </tspan><tspan
+         x="14.753906"
+         y="107.90506"
+         id="tspan26">(документация) </tspan><tspan
+         x="14.753906"
+         y="122.90506"
+         id="tspan27">функции</tspan></text>
+  </g>
+</svg>
