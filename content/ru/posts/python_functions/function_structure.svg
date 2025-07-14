@@ -7,8 +7,34 @@
    viewBox="0 0 92.852072 27.613891"
    version="1.1"
    id="svg1"
+   sodipodi:docname="function_structure.svg"
+   inkscape:export-filename="function_structure.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="2.4269604"
+     inkscape:cx="156.36844"
+     inkscape:cy="48.002432"
+     inkscape:window-width="2560"
+     inkscape:window-height="1016"
+     inkscape:window-x="0"
+     inkscape:window-y="859"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
   <defs
      id="defs1">
     <rect
@@ -96,53 +122,53 @@
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect25);display:inline;fill:#000000"><tspan
          x="102.93164"
          y="147.09256"
-         id="tspan4"><tspan
+         id="tspan31"><tspan
    style="fill:#00ffff"
-   id="tspan1">def</tspan> <tspan
+   id="tspan28">def</tspan> <tspan
    style="fill:#00ff00"
-   id="tspan2">f</tspan><tspan
+   id="tspan29">f</tspan><tspan
    style="fill:#ffffff"
-   id="tspan3">(x, y):
+   id="tspan30">(x, y):
 </tspan></tspan><tspan
          x="102.93164"
          y="162.09256"
-         id="tspan11"><tspan
+         id="tspan38"><tspan
            style="fill:#ffffff"
-           id="tspan5">   </tspan><tspan
+           id="tspan32">   </tspan><tspan
            style="fill:#ffff00"
-           id="tspan6"> </tspan><tspan
+           id="tspan33"> </tspan><tspan
            style="fill:#ffdd55"
-           id="tspan7">&quot;&quot;&quot;</tspan><tspan
+           id="tspan34">&quot;&quot;&quot;</tspan><tspan
            style="fill:#ffdd55"
-           id="tspan8">Считает значение функции </tspan><tspan
+           id="tspan35">Считает значение функции </tspan><tspan
            style="fill:#ffdd55"
-           id="tspan9">f(x, y)=x^a+y^b&quot;&quot;&quot;</tspan><tspan
+           id="tspan36">f(x, y)=x^a+y^b&quot;&quot;&quot;</tspan><tspan
            style="fill:#ffffff"
-           id="tspan10">
+           id="tspan37">
 </tspan></tspan><tspan
          x="102.93164"
          y="177.09256"
-         id="tspan13"><tspan
+         id="tspan40"><tspan
            style="fill:#ffffff"
-           id="tspan12">    a = 5
+           id="tspan39">    a = 5
 </tspan></tspan><tspan
          x="102.93164"
          y="192.09256"
-         id="tspan15"><tspan
+         id="tspan42"><tspan
    style="fill:#ffffff"
-   id="tspan14">    b = 3</tspan>
+   id="tspan41">    b = 3</tspan>
 </tspan><tspan
          x="102.93164"
          y="207.09256"
-         id="tspan20">    <tspan
+         id="tspan47">    <tspan
    style="fill:#00ffff"
-   id="tspan16">return</tspan> <tspan
+   id="tspan43">return</tspan> <tspan
    style="fill:#ffffff"
-   id="tspan17">x**a </tspan><tspan
+   id="tspan44">x**a </tspan><tspan
    style="fill:#ff0000"
-   id="tspan18">+</tspan><tspan
+   id="tspan45">+</tspan><tspan
    style="fill:#ffffff"
-   id="tspan19"> y**b</tspan></tspan></text>
+   id="tspan46"> y**b</tspan></tspan></text>
     <path
        style="fill:#800000;stroke:#cc0000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
        d="m 42.609442,35.541896 7.293621,-1.15878"
@@ -162,7 +188,7 @@
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect7);display:inline;fill:#cc0000;fill-opacity:1;stroke:none;stroke-width:0.755906;stroke-dasharray:none;stroke-opacity:1"><tspan
          x="14.753906"
          y="92.905057"
-         id="tspan21">возвращаемое значение</tspan></text>
+         id="tspan48">возвращаемое значение</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,46.635122,11.186005)"
@@ -170,7 +196,7 @@
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect7-1);display:inline;fill:#cc0000;fill-opacity:1;stroke:none;stroke-width:0.755906;stroke-dasharray:none;stroke-opacity:1"><tspan
          x="14.753906"
          y="92.905057"
-         id="tspan22">сигнатура функции</tspan></text>
+         id="tspan49">сигнатура функции</tspan></text>
     <path
        style="fill:none;stroke:#b90000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
        d="m 29.892806,53.663037 v 3.312267 h 29.050709 l 6.36e-4,-3.311748"
@@ -184,10 +210,10 @@
        y="0"><tspan
          x="46.589233"
          y="92.905057"
-         id="tspan23">тело </tspan><tspan
+         id="tspan50">тело </tspan><tspan
          x="23.621216"
          y="107.90506"
-         id="tspan24">функции</tspan></text>
+         id="tspan51">функции</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,75.569706,22.416167)"
@@ -195,12 +221,12 @@
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect7-4-6);display:inline;fill:#cc0000;fill-opacity:1;stroke:none;stroke-width:0.755906;stroke-dasharray:none;stroke-opacity:1"><tspan
          x="14.753906"
          y="92.905057"
-         id="tspan25">описание </tspan><tspan
+         id="tspan52">описание </tspan><tspan
          x="14.753906"
          y="107.90506"
-         id="tspan26">(документация) </tspan><tspan
+         id="tspan53">(документация) </tspan><tspan
          x="14.753906"
          y="122.90506"
-         id="tspan27">функции</tspan></text>
+         id="tspan54">функции</tspan></text>
   </g>
 </svg>
