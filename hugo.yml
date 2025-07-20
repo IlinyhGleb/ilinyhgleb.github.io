@@ -80,6 +80,8 @@ params:
   showtoc: true
   tocopen: false
 
+  customJS: ["https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"]
+
   # label:
   #   text: "ИГ"
   #   icon: /apple-touch-icon.png
@@ -135,6 +137,8 @@ params:
     hidden: true # only hide on current single page
     hiddenInList: true # hide on list pages and home
     hiddenInSingle: true # hide on single page
+
+
 
 taxonomies:
   course: courses
