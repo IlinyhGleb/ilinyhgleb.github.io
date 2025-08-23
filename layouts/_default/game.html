@@ -10,6 +10,12 @@
 
   <p class="mt-2">Управление: ← → для движения, ↑ для прыжка</p>
 
-  <script src="/js/game.js"></script>
+  <!-- Подключаем JS в нужном порядке -->
+  <script type="module" src="/js/config.js"></script>
+  <script type="module" src="/js/map.js"></script>
+  <script type="module" src="/js/npc.js"></script>
+  <script type="module" src="/js/physics.js"></script>
+  <script type="module" src="/js/player.js"></script>
+  <script type="module" src="/js/game.js"></script>
 </div>
 {{ end }}
