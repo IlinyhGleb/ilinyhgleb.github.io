@@ -17,12 +17,21 @@ export let player = {
   w: tileSize * 0.8,
   h: tileSize * 1.5,
   x: 2 * tileSize,
-  y: (mapH - 1) * tileSize - tileSize * 1.5, // или -player.h
+  y: (mapH - 1) * tileSize - tileSize * 1.5,
   vx: 0,
   vy: 0,
   onGround: false,
   dir: 1
 };
+
+export function resetPlayer() {
+  player.x = 2 * tileSize,
+  player.y = (mapH - 1) * tileSize - tileSize * 1.5,
+  player.vx = 0;
+  player.vy = 0;
+  player.onGround = false;
+  player.dir = 1;
+}
 
 export function updatePlayer(keys) {
   if (keys["ArrowLeft"]) {
@@ -102,6 +111,7 @@ function handleCollisions() {
         const tileX = x * tileSize;
         const tileY = y * tileSize;
 
+        // Проверка пересечения игрока и тайла
         if (
           player.x < tileX + tileSize &&
           player.x + player.w > tileX &&
@@ -117,16 +127,26 @@ function handleCollisions() {
             tileY + tileSize - player.y
           );
 
+          // решаем, по какой оси раздвигать
           if (overlapX < overlapY) {
-            if (player.x < tileX) player.x -= overlapX;
-            else player.x += overlapX;
+            // Горизонтальная коллизия
+            if (player.x + player.w / 2 < tileX + tileSize / 2) {
+              // игрок слева от тайла → двигаем влево
+              player.x -= overlapX;
+            } else {
+              // игрок справа от тайла → двигаем вправо
+              player.x += overlapX;
+            }
             player.vx = 0;
           } else {
-            if (player.y < tileY) {
+            // Вертикальная коллизия
+            if (player.y + player.h / 2 < tileY + tileSize / 2) {
+              // игрок сверху → ставим на тайл
               player.y -= overlapY;
               player.vy = 0;
               player.onGround = true;
             } else {
+              // игрок снизу → ударился головой
               player.y += overlapY;
               player.vy = 0;
             }
