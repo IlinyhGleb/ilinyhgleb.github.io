@@ -6,6 +6,8 @@ math = true
 tags = ["Python", "Информатика", "Основы программирования"]
 categories = ['Основы программирования']
 +++
+
+<!--more-->
 было:
 ```Python
         # Применяем все правила
@@ -32,4 +34,23 @@ categories = ['Основы программирования']
                 if rule.get('target').get('append') and rule['target']['append']:
                     data[file_number] = (target_sheet[rule['target']['cell']].value or "") + " " + data[file_number]
                 target_sheet[rule['target']['cell']] = data[file_number]
+```
+
+
+было:
+```Python
+    for root, dirs, files in os.walk(root_dir):
+        if dir_callback is not None:
+            if dir_filter is None or dir_filter(root):
+                res, err = safe_dir_callback(root)
+```
+
+стало:
+```Python
+    for root, dirs, files in os.walk(root_dir):
+        if dir_callback is None:
+            continue            
+        if dir_filter is not None and not dir_filter(root):
+            continue        
+        res, err = safe_dir_callback(root)
 ```

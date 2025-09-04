@@ -1,0 +1,4 @@
+<video controls {{ with .Get "width" }} width="{{ . }}"{{ end }}>
+  <source src="{{ .Get "src" }}" type="video/mp4">
+  Ваш браузер не поддерживает видео.
+</video>
