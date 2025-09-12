@@ -10,6 +10,9 @@ const tileSize = config.tileSize;
 const mapW = config.mapW;
 const mapH = config.mapH;
 
+let gameState = "play"; // play | dialog | death
+let activeNPC = null;
+
 // 5x5 редактор моста (локальный редактор для активного builder-NPC)
 let bridgeGrid = Array.from({ length: 5 }, () => Array(5).fill(0));
 let cursor = { x: 0, y: 0 };

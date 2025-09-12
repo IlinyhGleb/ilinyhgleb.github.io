@@ -21,7 +21,8 @@ export let player = {
   vx: 0,
   vy: 0,
   onGround: false,
-  dir: 1
+  dir: 1,
+  alive: true,   // новое свойство
 };
 
 export function resetPlayer() {
@@ -34,6 +35,8 @@ export function resetPlayer() {
 }
 
 export function updatePlayer(keys) {
+  if (!player.alive) return; // если мертв – ничего не делаем
+
   if (keys["ArrowLeft"]) {
     player.vx = -speed;
     player.dir = -1;
@@ -56,9 +59,16 @@ export function updatePlayer(keys) {
   player.y += player.vy;
 
   handleCollisions();
+
+  // проверка на смерть (упал ниже карты)
+  if (player.y > mapH * tileSize) {
+    player.alive = false;
+  }
 }
 
 export function drawPlayer(ctx, camera) {
+  if (!player.alive) return; // не рисуем, если умер
+
   if (playerImg.complete && playerImg.naturalWidth > 0) {
     // хотим, чтобы персонаж был около 1.5 тайла в высоту
     const targetHeight = tileSize * 1.5;

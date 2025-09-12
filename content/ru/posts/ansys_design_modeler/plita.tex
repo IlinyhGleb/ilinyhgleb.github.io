@@ -1,0 +1,50 @@
+
+
+\documentclass[tikz,border=5pt]{standalone}
+% \usepackage{tikz-3dplot}
+% \usepackage{pgfplots}
+\usepackage{tikz}
+% \usepackage[active,tightpage]{preview}
+% \PreviewEnvironment{tikzpicture}
+% \setlength{\PreviewBorder}{10pt}%
+\usetikzlibrary{calc}
+% \usepackage{amssymb}
+
+% \pgfplotsset{compat=1.18}
+
+
+%https://texample.net/bernoulli/
+%https://texample.net/cylinder-segment/
+
+\begin{document}
+
+
+\begin{tikzpicture}
+    % параметры
+    \def\DONEMM{159} % диаметр
+    \def\LONEMM{160} % 
+    \def\LTWOMM{212} %
+    \def\N{7}        % 
+    \def\HONEMM{30}
+    \def\HTWOMM{159}
+    \def\HTHREEMM{32}
+    
+    \def\NMINUSONE{\N-1}
+    \def\SCALE{0.001}
+    \def\LONE{\LONEMM*\SCALE}
+    \def\LTWO{\LTWOMM*\SCALE}
+    \def\LTHREE{\LTWO*\NMINUSONE+2*\LONE}
+    \def\RONE{0.5*\DONEMM*\SCALE} % радиус
+                 
+    % отверстия                
+    \foreach \i in {0,...,\NMINUSONE}{
+        \draw ({\LONE+\LTWO*\i},0) circle (\RONE);
+    }
+	\draw [style=-](0,0) -- (\LTHREE,0);
+
+\end{tikzpicture}
+
+
+
+
+\end{document}

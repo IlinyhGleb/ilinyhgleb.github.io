@@ -1,0 +1,13 @@
+*.synctex.gz
+*.vrb
+*.out
+*.log
+*.pdf
+*.toc
+*.snm
+*.nav
+*.data.minted
+*.tex~
+*.aux
+*.kate-swp
+*.fuse_hidden*
