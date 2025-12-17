@@ -54,3 +54,35 @@ categories = ['Основы программирования']
             continue        
         res, err = safe_dir_callback(root)
 ```
+
+
+
+было:
+```Python
+def get_units_coefficient(units):
+    units_coefficient = 1
+    if units == 'mm':
+        units_coefficient = 1e-3
+    elif units == 'cm':
+        units_coefficient = 1e-2
+    elif units == 'km':
+        units_coefficient = 1e3
+    elif units == 'mkm':
+        units_coefficient = 1e-6
+    elif units == 'GPa':
+        units_coefficient = 1e9
+    elif limb.find('units').text == 'atm':
+        units_coefficient = 101325
+    return units_coefficient
+```
+
+стало:
+```Python
+    for root, dirs, files in os.walk(root_dir):
+        if dir_callback is None:
+            continue            
+        if dir_filter is not None and not dir_filter(root):
+            continue        
+        res, err = safe_dir_callback(root)
+```
+
