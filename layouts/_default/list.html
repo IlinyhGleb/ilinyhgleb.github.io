@@ -1,4 +1,6 @@
+
 {{- define "main" }}
+
 
 {{- if (and site.Params.profileMode.enabled .IsHome) }}
 {{- partial "index_profile.html" . }}
@@ -45,6 +47,8 @@
 {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true"  }}
 {{- end }}
 
+{{- $pages = $pages.ByDate.Reverse }}
+
 {{- $paginator := .Paginate $pages }}
 
 {{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
@@ -69,6 +73,7 @@
   <header class="entry-header">
     <h2 class="entry-hint-parent">
       {{- .Title }}
+      
       {{- if .Draft }}
       <span class="entry-hint" title="Draft">
         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
@@ -117,5 +122,7 @@
 {{- end }}
 
 {{- end }}{{/* end profileMode */}}
+
+
 
 {{- end }}{{- /* end main */ -}}
