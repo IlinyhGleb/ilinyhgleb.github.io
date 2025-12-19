@@ -1,5 +1,5 @@
 +++
-date = '2025-12-19T17:00:00+05:00'
+date = '2025-12-19T08:00:00+05:00'
 draft = false
 title = 'Контрольная работа ANSYS Workbench Mechanical'
 math = true
