@@ -1,5 +1,19 @@
-# Taxonomies
-categories: "Категории"
-courses: "Курсы"
-tags: "Тэги"
-posts: "Посты"
+
+authors:
+  main:
+    full:
+      other: "Ильиных Глеб"
+
+description: 
+  other: "Блог Ильиных Глеба"
+
+common:
+  courses:
+    other: "Курсы"
+  posts:
+    other: "Посты"
+  tags:
+    other: "Тэги"
+  categories: 
+    other: "Категории"
+

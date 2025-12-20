@@ -1,0 +1,29 @@
+{{- if (.Param "ShowBreadCrumbs") -}}
+<div class="breadcrumbs">
+    {{- $url := replace .Parent.Permalink (printf "%s" site.Home.Permalink) "" }}
+    {{- $lang_url := strings.TrimPrefix (printf "%s/" .Lang) $url -}}
+
+    <a href="{{ "" | absLangURL }}">{{ i18n "home" | default "Home" }}</a>
+    {{- $scratch := newScratch }}
+    {{- range $index, $element := split $lang_url "/" }}
+
+    {{- $scratch.Add "path" (printf "%s/" $element )}}
+    {{- $bc_pg := site.GetPage ($scratch.Get "path") -}}
+
+    {{- if (and ($bc_pg) (gt (len . ) 0))}}
+    {{- print "&nbsp;»&nbsp;" | safeHTML -}}
+
+    {{- $label := $bc_pg.Name -}}
+
+    {{- if eq $bc_pg.Kind "taxonomy" -}}
+    {{- $label = i18n (printf "common.%s" $bc_pg.Data.Plural) | default $bc_pg.Name -}}
+    {{- else if eq $bc_pg.Kind "section" -}}
+    {{- $label = i18n (printf "common.%s" $bc_pg.Section) | default $bc_pg.Name -}}
+    {{- end -}}
+
+    <a href="{{ $bc_pg.Permalink }}">{{- $label -}}</a>
+    {{- end }}
+
+    {{- end -}}
+</div>
+{{- end -}}

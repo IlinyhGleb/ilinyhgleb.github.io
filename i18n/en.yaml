@@ -1,6 +1,18 @@
-# Taxonomies
-categories: "Categories"
-courses: "Courses"
-tags: "Tags"
-posts: "Posts"
 
+authors:
+  main:
+    full:
+      other: "Ilinyh Gleb"
+
+description: 
+  other: "Gleb Ilinyh's Blog"
+
+common:
+  courses:
+    other: "Courses"
+  posts:
+    other: "Posts"
+  tags:
+    other: "Tags"
+  categories: 
+    other: "Categories"
