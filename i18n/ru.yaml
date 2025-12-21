@@ -1,11 +1,12 @@
 
+meta:
+  description: 
+    other: "Блог Ильиных Глеба"
+
 authors:
   main:
     full:
       other: "Ильиных Глеб"
-
-description: 
-  other: "Блог Ильиных Глеба"
 
 common:
   courses:

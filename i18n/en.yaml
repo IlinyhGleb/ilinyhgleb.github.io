@@ -1,11 +1,12 @@
 
+meta:
+  description: 
+    other: "Gleb Ilinyh's Blog"
+
 authors:
   main:
     full:
       other: "Ilinyh Gleb"
-
-description: 
-  other: "Gleb Ilinyh's Blog"
 
 common:
   courses:
