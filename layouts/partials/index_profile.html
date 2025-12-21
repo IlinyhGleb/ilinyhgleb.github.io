@@ -37,9 +37,9 @@
         {{- with .buttons }}
         <div class="buttons">
             {{- range . }}
-            <a class="button" href="{{ trim .url " " }}" rel="noopener" title="{{ .name }}">
+            <a class="button" href="{{ trim .url " " }}" rel="noopener" title="{{ i18n (printf "common.%s" .id) }}">
                 <span class="button-inner">
-                    {{ .name }}
+                    {{ i18n (printf "common.%s" .id) }}
                     {{- if (findRE "://" .url) }}&nbsp;
                     <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
                         stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="14" width="14">

@@ -2,44 +2,34 @@ baseURL: 'https://ilinyhgleb.github.io/'
 languageCode: 'ru-ru'
 
 defaultContentLanguage: ru
-defaultContentLanguageInSubdir: true
+defaultContentLanguageInSubdir: false
 languages:
   ru:
     languageCode: ru-RU
     languageName: Русский
     contentDir: 'content/ru'
     weight: 1
+    title: 'Блог Ильиных Глеба'
 
-    menus:
-      main:
-        - name: Курсы
-          pageRef: /courses/
-          weight: 10
-        - name: Тэги
-          pageRef: /tags/
-          weight: 20
-        - name: Посты
-          pageRef: /posts/
-          weight: 30
-  # en:
-  #   languageCode: en-US
-  #   languageName: English
-  #   contentDir: 'content/en'
-  #   weight: 2
-  #
-  #   menus:
-  #     main:
-  #       - name: Courses
-  #         pageRef: /courses/
-  #         weight: 10
-  #       - name: Tags
-  #         pageRef: /tags/
-  #         weight: 20
-  #       - name: Posts
-  #         pageRef: /posts/
-  #         weight: 30
+  en:
+    languageCode: en-US
+    languageName: English
+    contentDir: 'content/en'
+    weight: 2
+    title: "Gleb Ilinyh's Blog"
 
-title: 'Блог Ильиных Глеба'
+menus:
+  main:
+    - identifier: courses
+      pageRef: /courses/
+      weight: 10
+    - identifier: tags
+      pageRef: /tags/
+      weight: 20
+    - identifier: posts
+      pageRef: /posts/
+      weight: 30
+
 theme: 'papermod'
 
 markup:
@@ -54,11 +44,11 @@ markup:
 params:
   mainSections:
     - posts
-  # title: ExamplseSite
-  # description: "ExampleSite description"
-  # keywords: [Blog, Courses, PaperMod]
-  author: Ilinyh Gleb
-
+  keywords: [Blog, Courses, PaperMod]
+  description:
+    id: description
+  author: 
+    id: main
   math: true
   DateFormat: "2 January 2006"
   defaultTheme: auto
@@ -102,26 +92,26 @@ params:
     title: " "
     subtitle: ""
     buttons:
-      - name: Курсы
+      - id: courses
         url: courses
-      - name: Посты
+      - id: posts
         url: posts
-      - name: Тэги
+      - id: tags
         url: tags
 
   # socialIcons:
-  #   - name: stackoverflow
-  #     url: "https://stackoverflow.com"
+  #   - name: vk
+  #     url: "https://vk.com/igv91"
   #   - name: github
-  #     url: "https://github.com/"
+  #     url: "https://github.com/IlinyhGleb"
 
   # analytics:
   #   google:
   #     SiteVerificationTag: "XYZabc"
   #   bing:
   #     SiteVerificationTag: "XYZabc"
-    # yandex:
-    #   SiteVerificationTag: "XYZabc"
+  #   yandex:
+  #     SiteVerificationTag: "XYZabc"
 
   cover:
     hidden: true # hide everywhere but not in structured data

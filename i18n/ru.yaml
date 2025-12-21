@@ -1,5 +1,20 @@
-# Taxonomies
-categories: "Категории"
-courses: "Курсы"
-tags: "Тэги"
-posts: "Посты"
+
+meta:
+  description: 
+    other: "Блог Ильиных Глеба"
+
+authors:
+  main:
+    full:
+      other: "Ильиных Глеб"
+
+common:
+  courses:
+    other: "Курсы"
+  posts:
+    other: "Посты"
+  tags:
+    other: "Тэги"
+  categories: 
+    other: "Категории"
+

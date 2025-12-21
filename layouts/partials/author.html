@@ -1,9 +1,35 @@
-{{- if or .Params.author site.Params.author }}
-{{- $author := (.Params.author | default site.Params.author) }}
-{{- $author_type := (printf "%T" $author) }}
-{{- if (or (eq $author_type "[]string") (eq $author_type "[]interface {}")) }}
-{{- (delimit $author ", " ) }}
-{{- else }}
-{{- $author }}
+{{- /* 1. Пытаемся взять ID автора */ -}}
+{{- $authorID := "" -}}
+
+{{- if site.Params.author }}
+  {{- if reflect.IsMap site.Params.author }}
+    {{- $authorID = site.Params.author.id | default "main" -}}
+  {{- else }}
+    {{- $authorID = site.Params.author -}}
+  {{- end }}
 {{- end }}
+
+{{- /* 2. Пытаемся взять автора из i18n */ -}}
+{{- $author := "" -}}
+{{- if $authorID }}
+  {{- $author = i18n (printf "authors.%s.full" $authorID) -}}
+{{- else }}
+  {{- $author = i18n "author.full" -}}
+{{- end }}
+
+{{- /* 3. Fallback, если i18n нет */ -}}
+{{- if not $author }}
+  {{- with .Params.author }}
+    {{- if reflect.IsSlice . }}
+      {{- delimit . ", " -}}
+    {{- else if reflect.IsMap . }}
+      {{- .id -}}
+    {{- else }}
+      {{- . -}}
+    {{- end }}
+  {{- else }}
+    {{- site.Title -}}
+  {{- end }}
+{{- else }}
+  {{- $author -}}
 {{- end -}}

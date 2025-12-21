@@ -87,11 +87,14 @@
             {{- $page_url:= $currentPage.Permalink | absLangURL }}
             {{- $is_search := eq (site.GetPage .KeyName).Layout `search` }}
             <li>
-                <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
-                {{- cond $is_search (" accesskey=/" | safeHTMLAttr) ("" | safeHTMLAttr ) }}>
+                {{- $label := i18n (printf "common.%s" .Identifier) -}}
+                <a
+                href="{{ .URL | absLangURL }}"
+                title="{{ $label }}{{ cond $is_search " (Alt + /)" "" }}"
+                {{ cond $is_search "accesskey=/" "" }}>
                     <span {{- if eq $menu_item_url $page_url }} class="active" {{- end }}>
                         {{- .Pre }}
-                        {{- .Name -}}
+                        {{- $label -}}
                         {{ .Post -}}
                     </span>
                     {{- if (findRE "://" .URL) }}&nbsp;
