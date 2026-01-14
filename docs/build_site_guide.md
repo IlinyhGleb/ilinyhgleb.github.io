@@ -8,7 +8,7 @@ hugo server --disableFastRender --port=1333 --buildDrafts --buildFuture
 
 To build a static without starting a server:
 ```bash
-hugo --gc --minify
+hugo --gc --minify --cleanDestinationDir 
 ```
 
 [Hugo documentation](https://gohugo.io/commands/hugo_server/)
