@@ -32,15 +32,6 @@ menus:
 
 theme: 'papermod'
 
-markup:
-  goldmark:
-    extensions:
-      passthrough:
-        enable: true
-        delimiters:
-          block: [['\[', '\]'], ['$$', '$$']]
-          inline: [['\(', '\)']]
-
 params:
   mainSections:
     - posts

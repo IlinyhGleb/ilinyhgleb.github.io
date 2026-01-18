@@ -1,7 +1,19 @@
 
 # Build Guide
 
-### To run server in developer mode:
+## Running site
+### To build site static:
+```bash
+npm run build
+```
+
+### To run site in developer mode:
+```bash
+npm run dev
+```
+
+## Running Hugo server separetely
+### To run Hugo server in developer mode:
 ```bash
 hugo server --disableFastRender --port=1333 --buildDrafts --buildFuture --noHTTPCache --cleanDestinationDir --panicOnWarning
 ```

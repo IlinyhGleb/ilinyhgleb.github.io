@@ -1,0 +1,9 @@
+.block-formula {
+  display: block;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.inline-formula svg {
+  height: 1.5rem;
+}

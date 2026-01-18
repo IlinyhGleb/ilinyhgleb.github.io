@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "math": "node scripts/render-math.js",
+    "build": "npm run math && hugo --gc --minify --cleanDestinationDir",
+    "dev": "npm run math && hugo server --disableFastRender --port=1333 --buildDrafts --buildFuture --noHTTPCache --cleanDestinationDir"
+  },
+  "dependencies": {
+    "mathjax-node": "^2.1.1"
+  }
+}
