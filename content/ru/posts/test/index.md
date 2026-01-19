@@ -11,16 +11,16 @@ title = 'Тестовый пост для проверки функционал�
 
 ## Latex
 
-Формула в отдельной строке через goldmark: $$ Fmax ≤ Fкр $$ 
-
 Формула внутри строки через goldmark: \( E = \sigma \cdot \varepsilon \)
 
+Формула в отдельной строке через goldmark: $$ F_{max} ≤ F_{кр} $$ 
+
 Inline формула:
-{{< tex inline >}}x^2 + 1{{< /tex >}}
+{{< tex inline >}}E = \sigma \cdot \varepsilon{{< /tex >}}
 
 Блочная формула:
 {{< tex >}}
-\int_0^1 x^2 \, dx = \frac{1}{3}
+F_{max} ≤ F_{кр}
 {{< /tex >}}
 
 ## Video
@@ -109,20 +109,17 @@ graph LR;
     B-->D;
     C-->D;
 ```
-
-
 ### svg
 ![Рекурсия](/posts/python/python_functions/recursion.svg)
 
 ### png
 ![Дерево операций](/posts/ansys/ansys_design_modeler/tree.png)
+
 ### Tikz
 
-
-
-<script type="text/tikz">
+<!-- <script type="text/tikz">
 \draw (0,0) circle (1in);
-</script>
+</script> -->
 
 
 ## Код

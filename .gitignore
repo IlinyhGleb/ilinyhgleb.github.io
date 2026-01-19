@@ -2,5 +2,5 @@ public/
 node_modules/
 .idea/
 .hugo_build.lock
-
+.build/
 /static/math/

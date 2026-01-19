@@ -5,5 +5,7 @@
 }
 
 .inline-formula svg {
-  height: 1.5rem;
+  display: inline-block;
+  height: 1em;
+  transform: translateY(0.05em);
 }

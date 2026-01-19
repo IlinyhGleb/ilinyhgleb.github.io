@@ -7,14 +7,14 @@ languages:
   ru:
     languageCode: ru-RU
     languageName: Русский
-    contentDir: 'content/ru'
+    contentDir: '.build/content/ru'
     weight: 1
     title: 'Блог Ильиных Глеба'
 
   en:
     languageCode: en-US
     languageName: English
-    contentDir: 'content/en'
+    contentDir: '.build/content/en'
     weight: 2
     title: "Gleb Ilinyh's Blog"
 
