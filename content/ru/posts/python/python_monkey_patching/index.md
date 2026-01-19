@@ -3,9 +3,9 @@ date = '2025-11-17T14:00:02+05:00'
 draft = true
 title = 'Подмена функций в Monkey Patching в Python'
 math = true
-tags = ["Python", "Информатика", "Основы программирования"]
-categories = ['Основы программирования']
-courses = ['Основы программирования']
+tags = ["Python", "informatika", "osnovi-programmirovaniya"]
+categories = ['osnovi-programmirovaniya']
+courses = ['osnovi-programmirovaniya']
 weight = 7
 +++
 

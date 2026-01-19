@@ -4,8 +4,8 @@ draft = false
 title = 'Расчёт осадки сваи в ANSYS Workbench Mechanical'
 math = true
 tags = ["Ansys", "Ansys Mechanical", "МДТТ", "Теория упругости", "Revolve", "Slice", "Mesh", "Структурированная сетка", "Осесимметричная задача"]
-categories = ['Расчётные программные комплексы']
-courses = ['Расчётные программные комплексы']
+categories = ['raschetnye-programmnye-kompleksy']
+courses = ['raschetnye-programmnye-kompleksy']
 +++
 
 <!--more-->

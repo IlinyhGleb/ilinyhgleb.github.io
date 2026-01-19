@@ -4,8 +4,8 @@ draft = false
 title = 'Контрольная работа ANSYS Workbench Mechanical'
 math = true
 tags = ["Ansys", "Ansys Mechanical", "МДТТ"]
-categories = ['Расчётные программные комплексы']
-courses = ['Расчётные программные комплексы']
+categories = ['raschetnye-programmnye-kompleksy']
+courses = ['raschetnye-programmnye-kompleksy']
 +++
 
 <!--more-->

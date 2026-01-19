@@ -3,9 +3,9 @@ date = '2025-07-01T13:55:57+05:00'
 draft = true
 title = 'Условное форматирование'
 math = true
-tags = ["Информатика"]
-categories = ["Информатика"]
-courses = ["Информатика"]
+tags = ["informatika"]
+categories = ["informatika"]
+courses = ["informatika"]
 +++
 
 <!--more-->

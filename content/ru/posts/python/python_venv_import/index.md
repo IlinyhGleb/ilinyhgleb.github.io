@@ -3,9 +3,9 @@ date = '2025-07-01T13:56:15+05:00'
 draft = false
 title = 'Запуск Python на компьютере. Настройка виртуального окружения Python. Импорт пакетов/модулей/библиотек'
 math = true
-tags = ["Python", "Информатика", "Основы программирования", "Виртуальное окружение"]
-categories = ['Основы программирования']
-courses = ['Основы программирования']
+tags = ["Python", "informatika", "osnovi-programmirovaniya", "Виртуальное окружение"]
+categories = ['osnovi-programmirovaniya']
+courses = ['osnovi-programmirovaniya']
 weight = 3
 +++
 

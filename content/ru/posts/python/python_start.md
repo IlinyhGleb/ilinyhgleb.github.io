@@ -3,9 +3,9 @@ date = '2025-07-01T13:55:50+05:00'
 draft = true
 title = 'Основы алгоритмизации'
 math = true
-tags = ["Python", "Информатика", "Основы программирования"]
-series = ["Информатика для иностранных студентов"]
-categories = ["Информатика"]
+tags = ["Python", "informatika", "osnovi-programmirovaniya"]
+series = ["informatika для иностранных студентов"]
+categories = ["informatika"]
 series_order = 18
 weight = 6
 +++

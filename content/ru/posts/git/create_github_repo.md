@@ -3,9 +3,9 @@ date = '2025-07-01T13:56:15+05:00'
 draft = true
 title = 'Создание репозитория GitHub'
 math = true
-tags = ["Python", "Информатика", "Основы программирования"]
-categories = ['Основы программирования']
-courses = ['Основы программирования']
+tags = ["Python", "informatika", "osnovi-programmirovaniya"]
+categories = ['osnovi-programmirovaniya']
+courses = ['osnovi-programmirovaniya']
 weight = 20
 +++
 

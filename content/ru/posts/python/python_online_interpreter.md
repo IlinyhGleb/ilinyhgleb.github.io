@@ -3,9 +3,9 @@ date = '2025-07-01T13:57:33+05:00'
 draft = false
 title = 'Онлайн интерпретатор Python'
 math = true
-tags = ["Python", "Основы программирования"]
-categories = ['Основы программирования']
-courses = ['Основы программирования']
+tags = ["Python", "osnovi-programmirovaniya"]
+categories = ['osnovi-programmirovaniya']
+courses = ['osnovi-programmirovaniya']
 weight = 2
 showtoc = false
 +++

@@ -4,8 +4,8 @@ draft = false
 title = 'Расчёт линейной потери устойчивости конструкций в ANSYS Workbench Mechanical'
 math = true
 tags = ["Ansys", "Ansys Mechanical", "МДТТ", "Теория упругости"]
-categories = ['Расчётные программные комплексы']
-courses = ['Расчётные программные комплексы']
+categories = ['raschetnye-programmnye-kompleksy']
+courses = ['raschetnye-programmnye-kompleksy']
 +++
 
 <!--more-->

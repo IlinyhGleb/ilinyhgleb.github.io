@@ -3,8 +3,8 @@ date = '2025-07-07T23:19:35+05:00'
 draft = true
 title = 'Операторы'
 math = true
-tags = ["Python", "Информатика", "Основы программирования"]
-categories = ['Основы программирования']
+tags = ["Python", "informatika", "osnovi-programmirovaniya"]
+categories = ['osnovi-programmirovaniya']
 +++
 
 

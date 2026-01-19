@@ -4,8 +4,8 @@ draft = false
 title = 'Создание геометрии в ANSYS Workbench Design Modeler'
 math = true
 tags = ["Ansys", "Workbench", "Ansys Design Modeler", "МДТТ", "Теория упругости"]
-categories = ['Расчётные программные комплексы']
-courses = ['Расчётные программные комплексы']
+categories = ['raschetnye-programmnye-kompleksy']
+courses = ['raschetnye-programmnye-kompleksy']
 +++
 
 <!--more-->

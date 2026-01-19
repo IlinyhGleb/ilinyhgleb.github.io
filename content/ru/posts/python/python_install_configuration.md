@@ -3,8 +3,8 @@ date: '2025-07-01T13:55:40+05:00'
 draft: true
 title: 'Установка Python'
 math: true
-tags: ["Python", "Информатика", "Основы программирования"]
-categories: ['Основы программирования']
+tags: ["Python", "informatika", "osnovi-programmirovaniya"]
+categories: ['osnovi-programmirovaniya']
 weight: 2
 ---
 

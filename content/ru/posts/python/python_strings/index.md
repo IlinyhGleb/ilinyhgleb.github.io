@@ -3,9 +3,9 @@ date = '2025-07-01T13:59:52+05:00'
 draft = false
 title = 'Строки'
 math = true
-tags = ["Python", "Информатика", "Основы программирования"]
-categories = ['Основы программирования']
-courses = ['Основы программирования']
+tags = ["Python", "informatika", "osnovi-programmirovaniya"]
+categories = ['osnovi-programmirovaniya']
+courses = ['osnovi-programmirovaniya']
 weight = 8
 +++
 

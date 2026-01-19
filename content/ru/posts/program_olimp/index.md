@@ -2,7 +2,7 @@
 date = '2025-07-01T13:56:15+05:00'
 draft = true
 title = 'Задания олимпиадные'
-tags = ["Информатика"]
+tags = ["informatika"]
 math = true
 weight = 20
 +++

@@ -3,8 +3,8 @@ date = '2025-07-01T13:58:05+05:00'
 draft = true
 title = 'Линейные алгоритмы'
 math = true
-tags = ["Python", "Информатика", "Основы программирования"]
-categories = ['Основы программирования']
+tags = ["Python", "informatika", "osnovi-programmirovaniya"]
+categories = ['osnovi-programmirovaniya']
 weight = 6
 +++
 
