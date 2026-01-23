@@ -61,8 +61,6 @@ params:
   showtoc: true
   tocopen: false
 
-  customJS: ["https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"]
-
   # label:
   #   text: "ИГ"
   #   icon: /apple-touch-icon.png
