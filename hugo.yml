@@ -23,12 +23,15 @@ menus:
     - identifier: courses
       pageRef: /courses/
       weight: 10
-    - identifier: tags
-      pageRef: /tags/
-      weight: 20
     - identifier: posts
       pageRef: /posts/
+      weight: 20
+    - identifier: search
+      pageRef: /search/
       weight: 30
+    - identifier: tags
+      pageRef: /tags/
+      weight: 40
 
 theme: 'papermod'
 
@@ -85,6 +88,8 @@ params:
         url: courses
       - id: posts
         url: posts
+      - id: search
+        url: search
       - id: tags
         url: tags
 
@@ -113,6 +118,11 @@ params:
   #   appendFilePath: true # to append file path to Edit link
   renderer.unsafe: true
 
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON # necessary for search
 
 taxonomies:
   course: courses

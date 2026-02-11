@@ -14,7 +14,9 @@ common:
   posts:
     other: "Посты"
   tags:
-    other: "Тэги"
+    other: "Теги"
   categories: 
     other: "Категории"
+  search: 
+    other: "Поиск"
 

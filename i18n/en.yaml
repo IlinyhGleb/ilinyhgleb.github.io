@@ -17,3 +17,5 @@ common:
     other: "Tags"
   categories: 
     other: "Categories"
+  search: 
+    other: "Search"
