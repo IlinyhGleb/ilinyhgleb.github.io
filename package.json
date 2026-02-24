@@ -1,9 +1,9 @@
 {
-  "scripts": {
-    "math": "node scripts/render-math.mjs",
-    "math-dev": "node scripts/render-math.mjs --watch",
-    "build": "npm run math && hugo --gc --minify --cleanDestinationDir",
-    "dev": "concurrently \"node scripts/render-math.mjs --watch\" \"hugo server --disableFastRender --port=1333 --buildDrafts --buildFuture --noHTTPCache --cleanDestinationDir\""
+    "scripts": {
+    "preprocess": "node scripts/preprocess.mjs",
+    "preprocess-dev": "node scripts/preprocess.mjs --watch",
+    "build": "npm run preprocess && hugo --gc --minify --cleanDestinationDir",
+    "dev": "concurrently \"npm run preprocess-dev\" \"hugo server --disableFastRender --port=1333 --contentDir .build/content --buildDrafts --buildFuture --noHTTPCache --cleanDestinationDir\""
   },
   "dependencies": {
     "chokidar": "^5.0.0",

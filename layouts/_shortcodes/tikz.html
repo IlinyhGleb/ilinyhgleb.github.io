@@ -1,0 +1,68 @@
+{{- $code := .Inner | chomp -}}
+{{- $hash := .Get "hash" -}}
+{{- $inline := .Get "inline" | default "false" -}}
+{{- $width := .Get "width" -}}
+{{- $height := .Get "height" -}}
+{{- $alt := .Get "alt" | default "TikZ diagram" -}}
+
+{{- if not $hash -}}
+  {{- errorf "tikz missing hash | file=%s | abs=%s" .Page.File.Path .Page.File.Filename -}}
+{{- end -}}
+
+{{- $path := printf "static/tikz/%s.svg" $hash -}}
+{{- $raw := readFile $path -}}
+
+{{/* ---------------- STYLE LOGIC ---------------- */}}
+
+{{- $divStyle := slice -}}
+{{- $svgStyle := slice -}}
+
+{{- if eq $inline "true" }}
+
+  {{- if $width }}
+    {{- $svgStyle = $svgStyle | append (printf "width:%s;" $width) -}}
+  {{- end -}}
+
+  {{- if $height }}
+    {{- $svgStyle = $svgStyle | append (printf "height:%s;" $height) -}}
+  {{- end -}}
+
+{{- else }}
+
+  {{- if $width }}
+    {{- $divStyle = $divStyle | append (printf "width:%s;" $width) -}}
+  {{- end -}}
+
+  {{- if $height }}
+    {{- $svgStyle = $svgStyle | append (printf "height:%s;" $height) -}}
+  {{- end -}}
+
+{{- end -}}
+
+{{- $divStyleStr := delimit $divStyle " " -}}
+{{- $svgStyleStr := delimit $svgStyle " " -}}
+
+{{/* ---------------- INJECT STYLE INTO SVG ---------------- */}}
+
+{{- $svg := $raw -}}
+{{- if $svgStyleStr }}
+  {{- $svg = replace $svg "<svg" (printf "<svg style=\"%s\"" ($svgStyleStr | safeCSS)) 1 -}}
+{{- end -}}
+
+{{/* ---------------- RENDER ---------------- */}}
+
+{{- if eq $inline "true" -}}
+  <span class="inline-tikz-wrapper"
+        role="img"
+        aria-label="{{ $alt }}"
+        {{ if $divStyleStr }}style="{{ $divStyleStr | safeCSS }}"{{ end }}>
+    {{ $svg | safeHTML }}
+  </span>
+{{- else -}}
+  <div class="tikz-diagram"
+       role="img"
+       aria-label="{{ $alt }}"
+       {{ if $divStyleStr }}style="{{ $divStyleStr | safeCSS }}"{{ end }}>
+    {{ $svg | safeHTML }}
+  </div>
+{{- end -}}
