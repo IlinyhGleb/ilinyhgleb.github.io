@@ -550,20 +550,20 @@ function watch() {
 
 /* ================= Run ================= */
 
-ensureDir(BUILD_CONTENT);
-ensureDir(MATH_SVG_DIR);
-ensureDir(TIKZ_SVG_DIR);
+async function main() {
+  ensureDir(BUILD_CONTENT);
+  ensureDir(MATH_SVG_DIR);
+  ensureDir(TIKZ_SVG_DIR);
 
-if (process.argv.includes("--watch")) {
-  walk(SRC_CONTENT).then(watch);
-} else {
-  walk(SRC_CONTENT);
+  if (process.argv.includes("--watch")) {
+    await walk(SRC_CONTENT);
+    watch();
+  } else {
+    await walk(SRC_CONTENT);
+  }
 }
 
-process.on("unhandledRejection", err => {
-  /**
-   * Глобальный обработчик необработанных Promise-ошибок.
-   * Предотвращает тихое падение процесса.
-   */
-  console.error("UNHANDLED:", err);
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
 });
