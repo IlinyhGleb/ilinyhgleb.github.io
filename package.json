@@ -1,15 +1,14 @@
 {
     "scripts": {
-    "preprocess": "node scripts/preprocess.mjs",
-    "preprocess-dev": "node scripts/preprocess.mjs --watch",
-    "build": "npm run preprocess && hugo --gc --minify --cleanDestinationDir",
-    "dev": "concurrently \"npm run preprocess-dev\" \"hugo server --disableFastRender --port=1333 --contentDir .build/content --buildDrafts --buildFuture --noHTTPCache --cleanDestinationDir\""
-  },
-  "dependencies": {
-    "chokidar": "^5.0.0",
-    "mathjax-node": "^2.1.1"
-  },
-  "devDependencies": {
-    "concurrently": "^9.2.1"
-  }
+        "preprocess": "node scripts/preprocess.mjs",
+        "preprocess-dev": "node scripts/preprocess.mjs --watch",
+        "build": "npm run preprocess && hugo --gc --minify --cleanDestinationDir",
+        "dev": "concurrently \"npm run preprocess-dev\" \"hugo server --disableFastRender --port=1333 --contentDir .build/content --buildDrafts --buildFuture --noHTTPCache\""
+    },
+    "dependencies": {
+        "chokidar": "^5.0.0"
+    },
+    "devDependencies": {
+        "concurrently": "^9.2.1"
+    }
 }

@@ -3,31 +3,19 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import chokidar from "chokidar";
-import mjAPI from "mathjax-node";
-import { execSync } from "child_process";
+import { exec } from "child_process";
+import { promisify } from "util";
+
+const execAsync = promisify(exec);
 
 /* ================= CONFIG ================= */
 
 const SRC_CONTENT = "content";
 const BUILD_CONTENT = ".build/content";
 const MATH_SVG_DIR = "static/math";
+const MATH_TMP_DIR = ".math-tmp";
 const TIKZ_SVG_DIR = "static/tikz";
 const TIKZ_TMP_DIR = ".tikz-tmp";
-
-/* ================= MathJax ================= */
-
-const OPERATORS = ["sh", "ch", "th", "tg", "ctg"];
-const MACROS = Object.fromEntries(
-  OPERATORS.map(op => [op, [`\\operatorname{${op}}`, 0]])
-);
-
-mjAPI.config({
-  MathJax: {
-    SVG: { font: "TeX" },
-    TeX: { Macros: MACROS }
-  }
-});
-mjAPI.start();
 
 /* ================= Regex ================= */
 
@@ -39,53 +27,301 @@ const TIKZ_RE = /{{<\s*tikz(?:\s+([^>]*))?\s*>}}([\s\S]*?){{<\s*\/tikz\s*>}}/g;
 /* ================= Utils ================= */
 
 function sha1(str) {
+  /**
+   * sha1
+   * Вычисляет SHA-1 хэш строки.
+   *
+   * Используется для:
+   *  - генерации детерминированных имён SVG
+   *  - кэширования компиляции LaTeX/TikZ
+   *
+   * @param {string} str - Входная строка
+   * @returns {string} 40-символьный hex-хэш
+   */
   return crypto.createHash("sha1").update(str).digest("hex");
 }
 
 function ensureDir(p) {
+  /**
+   * ensureDir
+   * Гарантирует существование директории.
+   * Создаёт её рекурсивно, если она отсутствует.
+   *
+   * Используется перед записью файлов.
+   *
+   * @param {string} p - Путь к директории
+   */
   fs.mkdirSync(p, { recursive: true });
 }
 
-function normalizeSVG(svg) {
+function normalizeMathSVG(svg) {
+  /**
+   * normalizeMathSVG
+   * Нормализует SVG, полученный из LaTeX-формулы:
+   *  - заменяет fill на currentColor
+   *  - заменяет stroke на currentColor
+   *
+   * Это позволяет управлять цветом формулы через CSS.
+   *
+   * @param {string} svg - Исходный SVG
+   * @returns {string} Нормализованный SVG
+   */
   return svg
     .replace(/fill="[^"]*"/g, 'fill="currentColor"')
     .replace(/stroke="[^"]*"/g, 'stroke="currentColor"')
-    .replace(
-      /<text /g,
-      '<text font-family="serif, PT Serif, Times New Roman" font-size="0.8em" font-style="italic"'
-    );
+    ;
+}
+
+function uniquifySVG(svg, hash) {
+  /**
+   * uniquifySVG
+   * Делает id внутри SVG уникальными,
+   * добавляя к ним хэш.
+   *
+   * Это предотвращает конфликты id,
+   * если несколько SVG вставляются на одну страницу.
+   *
+   * @param {string} svg - Исходный SVG
+   * @param {string} hash - Хэш, добавляемый к id
+   * @returns {string} SVG с уникализированными id
+   */
+  return svg
+    .replace(/id="([^"]+)"/g, `id="$1-${hash}"`)
+    .replace(/xlink:href="#([^"]+)"/g, `xlink:href="#$1-${hash}"`);
+}
+
+const compileQueue = [];
+let compiling = false;
+
+async function runCompileQueue() {
+  /**
+   * runCompileQueue
+   * Последовательно выполняет задачи компиляции LaTeX/TikZ.
+   *
+   * Обеспечивает:
+   *  - отсутствие гонок pdflatex
+   *  - отсутствие параллельных записей SVG
+   *  - стабильность сборки
+   *
+   * Очередь выполняется строго по одной задаче за раз.
+   */
+  if (compiling) return;
+  compiling = true;
+
+  while (compileQueue.length) {
+    const job = compileQueue.shift();
+    try {
+      await job();
+    } catch (err) {
+      console.error("Compile job error:", err);
+    }
+  }
+
+  compiling = false;
+}
+
+async function replaceAsync(str, regex, asyncFn) {
+  /**
+   * runCompileQueue
+   * Последовательно выполняет задачи компиляции LaTeX/TikZ.
+   *
+   * Обеспечивает:
+   *  - отсутствие гонок pdflatex
+   *  - отсутствие параллельных записей SVG
+   *  - стабильность сборки
+   *
+   * Очередь выполняется строго по одной задаче за раз.
+   */
+  const matches = [...str.matchAll(regex)];
+
+  if (!matches.length) return str;
+
+  const replacements = await Promise.all(
+    matches.map(match => asyncFn(...match))
+  );
+
+  let result = str;
+  for (let i = matches.length - 1; i >= 0; i--) {
+    const match = matches[i];
+    result =
+      result.slice(0, match.index) +
+      replacements[i] +
+      result.slice(match.index + match[0].length);
+  }
+
+  return result;
+}
+
+async function processFile(src) {
+  /**
+   * processFile
+   * Обрабатывает один файл из content/.
+   *
+   * Поведение:
+   *  - Если это .md → обрабатывает Markdown
+   *  - Иначе → просто копирует файл в .build/content
+   *
+   * Используется watcher'ом для инкрементальной сборки.
+   *
+   * @param {string} src - Путь к исходному файлу
+   */
+  const dst = path.join(
+    BUILD_CONTENT,
+    path.relative(SRC_CONTENT, src)
+  );
+
+  if (src.endsWith(".md")) {
+    await processMarkdown(src, dst);
+  } else {
+    ensureDir(path.dirname(dst));
+    fs.copyFileSync(src, dst);
+  }
+}
+
+function removeFile(src) {
+  /**
+   * removeFile
+   * Удаляет соответствующий файл из .build/content,
+   * если исходный файл был удалён.
+   *
+   * Используется watcher'ом при событии unlink.
+   *
+   * @param {string} src - Путь к удалённому файлу
+   */
+  const dst = path.join(
+    BUILD_CONTENT,
+    path.relative(SRC_CONTENT, src)
+  );
+
+  if (fs.existsSync(dst)) {
+    fs.unlinkSync(dst);
+  }
 }
 
 /* ================= Math Rendering ================= */
 
-async function renderMath(latex, srcFile, isInline) {
-  const hash = sha1(latex);
-  const svgPath = path.join(MATH_SVG_DIR, `${hash}.svg`);
+/* ===================== Safe SVG extraction ===================== */
+async function renderMath(latex, srcFile, isInline) { 
+  /**
+   * renderMath
+   * Компилирует LaTeX-формулу в SVG (если нужно)
+   * и возвращает Hugo shortcode для вставки.
+   *
+   * @param {string} latex - LaTeX-код
+   * @param {string} srcFile - Файл-источник (для логирования)
+   * @param {boolean} isInline - Inline или блоковая формула
+   * @returns {Promise<string>} Hugo shortcode
+   */
 
-  if (!fs.existsSync(svgPath)) {
-    const data = await new Promise((resolve, reject) => {
-      mjAPI.typeset({ math: latex, format: "TeX", svg: true }, resolve);
+  const hash = await compileMath(latex, isInline, srcFile);
+
+  return `{{< tex hash="${hash}"${isInline ? ' inline="true"' : ''} />}}`;
+}
+
+async function compileMath(latex, isInline, srcFile) {
+  /**
+   * compileMath
+   * Добавляет задачу компиляции LaTeX-формулы в очередь.
+   *
+   * Шаги:
+   *  1. Генерирует хэш
+   *  2. Проверяет существование SVG (кэш)
+   *  3. Запускает pdflatex
+   *  4. Конвертирует PDF → SVG
+   *  5. Нормализует SVG
+   *
+   * Компиляция выполняется через общую очередь.
+   *
+   * @param {string} latex - LaTeX-код
+   * @param {boolean} isInline - Inline или блок
+   * @param {string} srcFile - Исходный файл
+   * @returns {Promise<string>} Хэш SVG
+   */
+  return new Promise((resolve, reject) => {
+
+    compileQueue.push(async () => {
+      try {
+        ensureDir(MATH_TMP_DIR);
+        ensureDir(MATH_SVG_DIR);
+
+        const body = isInline
+          ? `$${latex}$`
+          : `\\[\n${latex}\n\\]`;
+
+        const hash = sha1(body);
+
+        const texFile = path.join(MATH_TMP_DIR, `${hash}.tex`);
+        const pdfFile = path.join(MATH_TMP_DIR, `${hash}.pdf`);
+        const svgFile = path.join(MATH_SVG_DIR, `${hash}.svg`);
+
+        if (fs.existsSync(svgFile)) {
+          resolve(hash);
+          return;
+        }
+
+        const tex = `
+\\documentclass[border=2pt, varwidth]{standalone}
+\\usepackage{amsmath}
+\\usepackage{amssymb}
+\\usepackage{amsfonts}
+\\usepackage{mathtools}
+\\usepackage[T2A]{fontenc}
+\\usepackage[utf8]{inputenc}
+\\usepackage[american,russian]{babel}
+\\begin{document}
+${body}
+\\end{document}
+`;
+
+        fs.writeFileSync(texFile, tex);
+
+        await execAsync(
+          `pdflatex -interaction=batchmode -output-directory="${MATH_TMP_DIR}" "${texFile}"`
+        );
+        await execAsync(`pdf2svg "${pdfFile}" "${svgFile}"`);
+        
+        let svg = fs.readFileSync(svgFile, "utf8");
+        svg = normalizeMathSVG(svg);
+        svg = uniquifySVG(svg, hash);
+
+        if (fs.existsSync(svgFile)) {
+          const oldSvg = fs.readFileSync(svgFile, "utf8");
+          if (oldSvg === svg) {
+            return hash;
+            }
+        }
+        fs.writeFileSync(svgFile, svg);
+
+        console.log("Math LaTeX compile success:", svgFile, body);
+
+        resolve(hash);
+
+      } catch (err) {
+        console.error("Math LaTeX compile error:");
+        console.error("file:", srcFile);
+        console.error("latex:", latex);
+        reject(err);
+      }
     });
 
-    if (data.errors) {
-      console.error("MathJax error:", srcFile, latex, data.errors);
-      return null;
-    }
-
-    const svg = normalizeSVG(data.svg);
-    fs.writeFileSync(svgPath, svg);
-    console.log("✔ math:", svgPath);
-  }
-
-  // Возвращаем Goldmark-шорткод, чтобы Goldmark рендерил inline/block
-  return isInline
-    ? `{{< tex inline >}}${latex}{{< /tex >}}`
-    : `{{< tex >}}${latex}{{< /tex >}}`;
+    runCompileQueue();
+  });
 }
+
 
 /* ================= TikZ Rendering ================= */
 function normalizeTikzSVG(svg) {
-  // Убираем width/height, чтобы можно было управлять через CSS
+  /**
+   * normalizeTikzSVG
+   * Нормализует SVG, полученный из TikZ:
+   *  - удаляет width/height
+   *  - заменяет чёрный цвет на currentColor
+   *
+   * Это позволяет управлять размером и цветом через CSS.
+   *
+   * @param {string} svg - Исходный SVG
+   * @returns {string} Нормализованный SVG
+   */
   return svg
     .replace(/\swidth="[^"]+"/, '')
     .replace(/\sheight="[^"]+"/, '')
@@ -95,16 +331,41 @@ function normalizeTikzSVG(svg) {
 
 
 function compileTikz(code, hash, srcFile) {
-  const texFile = path.join(TIKZ_TMP_DIR, `${hash}.tex`);
-  const pdfFile = path.join(TIKZ_TMP_DIR, `${hash}.pdf`);
-  const svgFile = path.join(TIKZ_SVG_DIR, `${hash}.svg`);
+  /**
+   * compileTikz
+   * Добавляет задачу компиляции TikZ в очередь.
+   *
+   * Шаги:
+   *  1. Генерирует .tex
+   *  2. Запускает pdflatex
+   *  3. Конвертирует PDF → SVG
+   *  4. Нормализует SVG
+   *
+   * Использует общую очередь компиляции,
+   * чтобы избежать параллельных вызовов pdflatex.
+   *
+   * @param {string} code - TikZ-код
+   * @param {string} hash - Хэш блока
+   * @param {string} srcFile - Файл-источник
+   * @returns {Promise<string>} Хэш SVG
+   */
+  return new Promise((resolve, reject) => {
 
-  if (fs.existsSync(svgFile)) return;
+    compileQueue.push(async () => {
+      try {
+        ensureDir(TIKZ_TMP_DIR);
+        ensureDir(TIKZ_SVG_DIR);
 
-  ensureDir(TIKZ_TMP_DIR);
-  ensureDir(TIKZ_SVG_DIR);
+        const texFile = path.join(TIKZ_TMP_DIR, `${hash}.tex`);
+        const pdfFile = path.join(TIKZ_TMP_DIR, `${hash}.pdf`);
+        const svgFile = path.join(TIKZ_SVG_DIR, `${hash}.svg`);
+        
+        if (fs.existsSync(svgFile)) {
+          resolve(hash);
+          return;
+        }
 
-  const tex = `
+        const tex = `
 \\documentclass[tikz,border=2pt]{standalone}
 \\usepackage{tikz}
 \\begin{document}
@@ -112,74 +373,97 @@ ${code}
 \\end{document}
 `;
 
-  fs.writeFileSync(texFile, tex);
+        fs.writeFileSync(texFile, tex);
 
-  try {
-    execSync(`pdflatex -interaction=batchmode -output-directory=${TIKZ_TMP_DIR} ${texFile}`);
-    execSync(`pdf2svg ${pdfFile} ${svgFile}`);
+        await execAsync(
+          `pdflatex -interaction=batchmode -output-directory="${TIKZ_TMP_DIR}" "${texFile}"`,
+          { stdio: "inherit" }
+        );
 
-    // --- Нормализуем SVG после генерации ---
-    const raw = fs.readFileSync(svgFile, 'utf8');
-    const cleaned = normalizeTikzSVG(raw);
-    fs.writeFileSync(svgFile, cleaned);
+        await execAsync(`pdf2svg "${pdfFile}" "${svgFile}"`, { stdio: "inherit" });
 
-    console.log("✔ tikz:", svgFile);
-  } catch {
-    console.error("TikZ compile error:", srcFile);
-  }
+        let svg = fs.readFileSync(svgFile, 'utf8');
+        svg = normalizeTikzSVG(svg);
+        fs.writeFileSync(svgFile, svg);
+
+        console.log("TikZ LaTeX compile success:", svgFile);
+
+        resolve(hash)
+      } catch (err) {
+        console.error("TikZ LaTeX compile error:");
+        console.error("file:", srcFile);
+        console.error("code:", code);
+        reject(err)
+      }
+    })
+
+    runCompileQueue()
+  })
 }
 
 /* ================= Markdown Processor ================= */
 
 async function processMarkdown(srcFile, dstFile) {
+  /**
+   * processMarkdown
+   * Полностью обрабатывает Markdown-файл:
+   *
+   *  1. Заменяет блоковую математику ($$ $$)
+   *  2. Заменяет inline математику (\( \))
+   *  3. Компилирует TikZ-блоки
+   *  4. Записывает результат в .build/content
+   *
+   * Использует replaceAsync для безопасной
+   * асинхронной замены.
+   *
+   * @param {string} srcFile - Исходный Markdown
+   * @param {string} dstFile - Путь назначения
+   */
   let text = fs.readFileSync(srcFile, "utf8");
 
   // ----- Блоковая математика -----
-  for (const m of [...text.matchAll(BLOCK_MATH)]) {
-    const latex = m[1].trim();
-    const shortcode = await renderMath(latex, srcFile, false);
-    if (shortcode) text = text.replace(m[0], shortcode);
-  }
+  text = await replaceAsync(text, BLOCK_MATH, async (match, latex) => {
+    return await renderMath(latex.trim(), srcFile, false);
+  });
 
   // ----- Inline математика -----
-  for (const m of [...text.matchAll(INLINE_MATH)]) {
-    const latex = m[1].trim();
-    const shortcode = await renderMath(latex, srcFile, true);
-    if (shortcode) text = text.replace(m[0], shortcode);
-  }
+  text = await replaceAsync(text, INLINE_MATH, async (match, latex) => {
+    return await renderMath(latex.trim(), srcFile, true);
+  });
 
   // ----- TikZ -----
-  for (const m of [...text.matchAll(TIKZ_RE)]) {
-    const attrStr = m[1] || ""; // например: width="70%" height="300px" inline
-    const code = m[2].trim();
+  text = await replaceAsync(text, TIKZ_RE, async (match, attrStr = "", code) => {
+    code = code.trim();
+
     const hash = sha1(code);
 
-    compileTikz(code, hash, srcFile);
+    // ВАЖНО: await!
+    await compileTikz(code, hash, srcFile);
 
-    // Парсим атрибуты
+    // --- Парсинг атрибутов ---
     const attrs = {};
     attrStr.split(/\s+/).forEach(tok => {
       const eq = tok.indexOf("=");
       if (eq !== -1) {
         const key = tok.slice(0, eq);
         let val = tok.slice(eq + 1);
-        // убираем кавычки, если есть
         val = val.replace(/^["']|["']$/g, "");
         attrs[key] = val;
       } else if (tok === "inline") {
-        attrs["inline"] = "true";
+        attrs.inline = "true";
       }
     });
 
-    // Собираем shortocode
+    // --- Сборка shortcode ---
     let sc = `{{< tikz hash="${hash}"`;
     if (attrs.inline) sc += ` inline="true"`;
     if (attrs.width) sc += ` width="${attrs.width}"`;
     if (attrs.height) sc += ` height="${attrs.height}"`;
     sc += ` />}}`;
 
-    text = text.replace(m[0], sc);
+    return sc;
   }
+  );
 
   ensureDir(path.dirname(dstFile));
   fs.writeFileSync(dstFile, text, "utf8");
@@ -188,6 +472,19 @@ async function processMarkdown(srcFile, dstFile) {
 /* ================= Walk ================= */
 
 async function walk(dir) {
+  /**
+   * walk
+   * Рекурсивно обходит директорию content/
+   * и обрабатывает все файлы.
+   *
+   * Используется:
+   *  - при начальной сборке
+   *
+   * После старта watch используется
+   * инкрементальная обработка.
+   *
+   * @param {string} dir - Директория для обхода
+   */
   for (const name of fs.readdirSync(dir)) {
     const src = path.join(dir, name);
     const dst = path.join(BUILD_CONTENT, path.relative(SRC_CONTENT, src));
@@ -206,25 +503,40 @@ async function walk(dir) {
 /* ================= Watch ================= */
 
 function watch() {
-  const watcher = chokidar.watch(SRC_CONTENT, { ignoreInitial: true });
-  let timer = null;
+  /**
+   * watch
+   * Запускает chokidar для отслеживания изменений в content/.
+   *
+   * Реакции:
+   *  - add → обработать файл
+   *  - change → обработать файл
+   *  - unlink → удалить из build
+   *
+   * Реализует инкрементальную сборку,
+   * без полного пересканирования.
+   */
+  const watcher = chokidar.watch(SRC_CONTENT, {
+  ignoreInitial: true,
+  usePolling: true,
+  interval: 200,
+  ignored: [
+    /(^|[\/\\])\../,
+    MATH_SVG_DIR,
+    TIKZ_SVG_DIR,
+    BUILD_CONTENT
+  ]
+  });
 
-  function scheduleRebuild(event, file) {
-    console.log(`📄 ${event}: ${path.relative(SRC_CONTENT, file)}`);
-    clearTimeout(timer);
-    timer = setTimeout(async () => {
-      console.log("🔄 running preprocess...");
-      await walk(SRC_CONTENT);
-      console.log("✔ preprocess done\n");
-    }, 150);
-  }
+  watcher.on("all", (event, file) => {
+    console.log("WATCH EVENT:", event, file);
+  });
 
   watcher
-    .on("add", file => scheduleRebuild("add", file))
-    .on("change", file => scheduleRebuild("change", file))
-    .on("unlink", file => scheduleRebuild("unlink", file));
+    .on("add", file => processFile(file).catch(console.error))
+    .on("change", file => processFile(file).catch(console.error))
+    .on("unlink", file => removeFile(file));
 
-  console.log("👀 Watching content/ ...");
+  console.log("Watching content/ ...");
 }
 
 /* ================= Run ================= */
@@ -239,4 +551,10 @@ if (process.argv.includes("--watch")) {
   walk(SRC_CONTENT);
 }
 
-process.on("unhandledRejection", err => console.error("UNHANDLED:", err.message));
+process.on("unhandledRejection", err => {
+  /**
+   * Глобальный обработчик необработанных Promise-ошибок.
+   * Предотвращает тихое падение процесса.
+   */
+  console.error("UNHANDLED:", err);
+});

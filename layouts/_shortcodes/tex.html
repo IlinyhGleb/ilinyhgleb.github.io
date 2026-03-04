@@ -1,22 +1,22 @@
-{{- $inline := eq (.Get 0) "inline" -}}
-{{- $latex := .Inner | strings.TrimSpace -}}
-{{- $hash := sha1 $latex -}}
+{{- $code := .Inner | chomp -}}
+{{- $inline := .Get "inline" | default "false" -}}
+{{- $hash := .Get "hash" -}}
 {{- $svgPath := printf "static/math/%s.svg" $hash -}}
 
-{{- if $inline -}}
-<span class="inline-formula">
+{{- if eq $inline "true" }}
+<span class="math-inline">
   {{- if (fileExists $svgPath) -}}
     {{- readFile $svgPath | safeHTML -}}
   {{- else -}}
-    <code>{{ $latex }}</code>
+    <code>{{ $hash }}</code>
   {{- end -}}
 </span>
 {{- else -}}
-<div class="block-formula">
+<div class="math-block">
   {{- if (fileExists $svgPath) -}}
     {{- readFile $svgPath | safeHTML -}}
   {{- else -}}
-    <code>{{ $latex }}</code>
+    <code>{{ $hash }}</code>
   {{- end -}}
 </div>
 {{- end -}}
