@@ -368,6 +368,15 @@ function compileTikz(code, hash, srcFile) {
         const tex = `
 \\documentclass[tikz,border=2pt]{standalone}
 \\usepackage{tikz}
+\\usepackage[T2A]{fontenc}
+\\usepackage[utf8]{inputenc}
+\\usepackage[american,russian]{babel}
+\\usetikzlibrary{positioning,shapes,shadows,arrows,arrows.meta}
+\\usetikzlibrary{datavisualization, datavisualization.formats.functions}
+\\usetikzlibrary{calc} % для позиционирования на картинках
+\\usetikzlibrary{tikzmark}
+\\usetikzlibrary{bending,fit,automata}
+\\usetikzlibrary{decorations.pathreplacing}
 \\begin{document}
 ${code}
 \\end{document}
