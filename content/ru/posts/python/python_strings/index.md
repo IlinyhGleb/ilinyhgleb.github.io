@@ -209,8 +209,8 @@ weight = 8
 \begin{tikzpicture}[
     >=Latex,
     every node/.style={font=\ttfamily},
-    placeholder0/.style={draw=teal!60, fill=teal!8, rounded corners=2pt, inner sep=2pt},
-    placeholder1/.style={draw=purple!60, fill=purple!8, rounded corners=2pt, inner sep=2pt},
+    placeholder0/.style={draw=teal!60, fill=teal!8, rounded corners=2pt, inner sep=2pt, text=teal!90!black},
+    placeholder1/.style={draw=purple!60, fill=purple!8, rounded corners=2pt, inner sep=2pt, text=purple!90!black},
     arg0/.style={text=teal!70!black},
     arg1/.style={text=purple!80!black},
     digitbox/.style={draw=black!60, minimum width=3.8mm, minimum height=6mm, inner sep=0pt,
@@ -219,12 +219,14 @@ weight = 8
     digitbox0/.style={
         digitbox,
         fill=teal!8,
-        draw=teal!60
+        draw=teal!60,
+        text=teal!90!black
     },
     digitbox1/.style={
         digitbox,
         fill=purple!8,
-        draw=purple!60
+        draw=purple!60,
+        text=purple!90!black
     },
 ]
 
