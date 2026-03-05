@@ -41,6 +41,7 @@ jobs:
             texlive-latex-extra \
             texlive-fonts-recommended \
             texlive-lang-cyrillic \
+            cm-super \
             pdf2svg
 
       # ----------------------------
