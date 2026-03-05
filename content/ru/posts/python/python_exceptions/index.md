@@ -2,7 +2,6 @@
 date = '2025-07-01T13:59:36+05:00'
 draft = true
 title = 'Исключения'
-math = true
 tags = ["Python", "informatika", "osnovi-programmirovaniya"]
 categories = ['osnovi-programmirovaniya']
 courses = ['osnovi-programmirovaniya']
@@ -158,7 +157,7 @@ print(p, q, m)
 - В работу с исключениями входят:
   1. Создание исключений (В python можно вызвать командой **raise**)
   2. Обработка исключений
-- Документация: <https://docs.python.org/3/tutorial/errors.html>
+- Документация: [https://docs.python.org/3/tutorial/errors.html](<https://docs.python.org/3/tutorial/errors.html>)
 
 ### Встроенные исключения
 
