@@ -326,7 +326,9 @@ function normalizeTikzSVG(svg) {
     .replace(/\swidth="[^"]+"/, '')
     .replace(/\sheight="[^"]+"/, '')
     .replace(/fill="rgb\(0%,\s*0%,\s*0%\)"/g, 'fill="currentColor"')
-    .replace(/stroke="rgb\(0%,\s*0%,\s*0%\)"/g, 'stroke="currentColor"');
+    .replace(/stroke="rgb\(0%,\s*0%,\s*0%\)"/g, 'stroke="currentColor"')
+    .replace(/<svg([^>]*)>/, '<svg$1 preserveAspectRatio="xMidYMid meet">')  
+    ;
 }
 
 
@@ -393,6 +395,7 @@ ${code}
 
         let svg = fs.readFileSync(svgFile, 'utf8');
         svg = normalizeTikzSVG(svg);
+        svg = uniquifySVG(svg, hash);
         fs.writeFileSync(svgFile, svg);
 
         console.log("TikZ LaTeX compile success:", svgFile);

@@ -12,7 +12,6 @@
   width: 100%;  /* по умолчанию ширина блока */
   height: auto;
   display: block;
-  color: currentColor;
 }
 
 /* =========================
@@ -29,28 +28,21 @@
   width: auto;
   height: 1.4em; /* базовый размер, можно override через height атрибут */
   display: inline-block;
-  color: currentColor;
 }
 
 /* =========================
    SMART THEME LOGIC
 ========================= */
 
-/* 1️⃣ Линии всегда под тему */
-.tikz-diagram svg path,
-.tikz-diagram svg line,
-.tikz-diagram svg polyline,
-.tikz-diagram svg polygon,
-.tikz-diagram svg circle,
-.tikz-diagram svg rect,
-.tikz-diagram svg ellipse,
-.inline-tikz-wrapper svg path,
-.inline-tikz-wrapper svg line,
-.inline-tikz-wrapper svg polyline,
-.inline-tikz-wrapper svg polygon,
-.inline-tikz-wrapper svg circle,
-.inline-tikz-wrapper svg rect,
-.inline-tikz-wrapper svg ellipse {
+/* Линии под тему, если stroke черный или отсутствует, но не для текста */
+.tikz-diagram svg [stroke="#000"],
+.tikz-diagram svg [stroke="#000000"],
+.tikz-diagram svg [stroke="rgb(0%,0%,0%)"],
+.tikz-diagram svg [stroke="rgb(0,0,0)"],
+.inline-tikz-wrapper svg [stroke="#000"],
+.inline-tikz-wrapper svg [stroke="#000000"],
+.inline-tikz-wrapper svg [stroke="rgb(0%,0%,0%)"],
+.inline-tikz-wrapper svg [stroke="rgb(0,0,0)"] {
   stroke: currentColor !important;
 }
 
@@ -71,10 +63,9 @@
   fill: currentColor !important;
 }
 
-/* если fill вообще не указан */
-.tikz-diagram svg :not([fill]),
-.inline-tikz-wrapper svg :not([fill]) {
-  fill: currentColor;
+.tikz-diagram svg,
+.inline-tikz-wrapper svg {
+  color: var(--body-color);
 }
 
 /* 3️⃣ fill="none" никогда не трогаем */
