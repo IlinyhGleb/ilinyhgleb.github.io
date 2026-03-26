@@ -357,11 +357,12 @@ function compileTikz(code, hash, srcFile) {
       try {
         ensureDir(TIKZ_TMP_DIR);
         ensureDir(TIKZ_SVG_DIR);
-
+        
         const texFile = path.join(TIKZ_TMP_DIR, `${hash}.tex`);
         const pdfFile = path.join(TIKZ_TMP_DIR, `${hash}.pdf`);
         const svgFile = path.join(TIKZ_SVG_DIR, `${hash}.svg`);
-        
+        const srcDir = path.dirname(srcFile);
+
         if (fs.existsSync(svgFile)) {
           resolve(hash);
           return;
@@ -388,7 +389,8 @@ ${code}
 
         await execAsync(
           `pdflatex -interaction=batchmode -output-directory="${TIKZ_TMP_DIR}" "${texFile}"`,
-          { stdio: "inherit" }
+          { stdio: "inherit", 
+            env: { ...process.env, TEXINPUTS: `${srcDir}${path.delimiter}${process.env.TEXINPUTS || ""}` }}
         );
 
         await execAsync(`pdf2svg "${pdfFile}" "${svgFile}"`, { stdio: "inherit" });
@@ -530,7 +532,7 @@ function watch() {
   const watcher = chokidar.watch(SRC_CONTENT, {
   ignoreInitial: true,
   usePolling: true,
-  interval: 200,
+  interval: 2000,
   ignored: [
     /(^|[\/\\])\../,
     MATH_SVG_DIR,
