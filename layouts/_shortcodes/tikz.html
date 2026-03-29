@@ -9,7 +9,7 @@
   {{- errorf "tikz missing hash | file=%s | abs=%s" .Page.File.Path .Page.File.Filename -}}
 {{- end -}}
 
-{{- $path := printf "static/tikz/%s.svg" $hash -}}
+{{- $path := printf "static/latex/%s.svg" $hash -}}
 {{- $raw := readFile $path -}}
 
 {{/* ---------------- STYLE LOGIC ---------------- */}}

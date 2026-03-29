@@ -1,0 +1,11 @@
+.latex-inline {
+  margin: 0 0.1em;
+}
+
+.latex-block {
+  text-align: center;
+}
+
+.latex-block svg {
+  display: inline-block;
+}

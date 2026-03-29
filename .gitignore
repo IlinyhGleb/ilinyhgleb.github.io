@@ -3,9 +3,7 @@ node_modules/
 .idea/
 .hugo_build.lock
 .build/
-/static/math/
-/static/tikz/
-.tikz-tmp/
-.math-tmp/
+/static/latex/
+.latex-tmp/
 *.zip
 

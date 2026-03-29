@@ -12,13 +12,12 @@ const execAsync = promisify(exec);
 
 const SRC_CONTENT = "content";
 const BUILD_CONTENT = ".build/content";
-const MATH_SVG_DIR = "static/math";
-const MATH_TMP_DIR = ".math-tmp";
-const TIKZ_SVG_DIR = "static/tikz";
-const TIKZ_TMP_DIR = ".tikz-tmp";
+const LATEX_SVG_DIR = "static/latex"
+const LATEX_TMP_DIR = ".latex-tmp"
 
 /* ================= Regex ================= */
 
+const LATEX_BLOCK_RE = /{{<\s*latex(?:\s+([^>]*))?\s*>}}([\s\S]*?){{<\s*\/latex\s*>}}/g;
 const BLOCK_MATH = /\$\$([\s\S]+?)\$\$/g;
 const INLINE_MATH = /\\\((.+?)\\\)/g;
 
@@ -62,6 +61,24 @@ function normalizeMathSVG(svg) {
    *  - заменяет stroke на currentColor
    *
    * Это позволяет управлять цветом формулы через CSS.
+   *
+   * @param {string} svg - Исходный SVG
+   * @returns {string} Нормализованный SVG
+   */
+  return svg
+    .replace(/fill="[^"]*"/g, 'fill="currentColor"')
+    .replace(/stroke="[^"]*"/g, 'stroke="currentColor"')
+    ;
+}
+
+function normalizeLatexSVG(svg) {
+  /**
+   * normalizeLatexSVG
+   * Нормализует SVG, полученный из LaTeX-объекта:
+   *  - заменяет fill на currentColor
+   *  - заменяет stroke на currentColor
+   *
+   * Это позволяет управлять цветом объекта через CSS.
    *
    * @param {string} svg - Исходный SVG
    * @returns {string} Нормализованный SVG
@@ -198,117 +215,6 @@ function removeFile(src) {
   }
 }
 
-/* ================= Math Rendering ================= */
-
-/* ===================== Safe SVG extraction ===================== */
-async function renderMath(latex, srcFile, isInline) { 
-  /**
-   * renderMath
-   * Компилирует LaTeX-формулу в SVG (если нужно)
-   * и возвращает Hugo shortcode для вставки.
-   *
-   * @param {string} latex - LaTeX-код
-   * @param {string} srcFile - Файл-источник (для логирования)
-   * @param {boolean} isInline - Inline или блоковая формула
-   * @returns {Promise<string>} Hugo shortcode
-   */
-
-  const hash = await compileMath(latex, isInline, srcFile);
-
-  return `{{< tex hash="${hash}"${isInline ? ' inline="true"' : ''} />}}`;
-}
-
-async function compileMath(latex, isInline, srcFile) {
-  /**
-   * compileMath
-   * Добавляет задачу компиляции LaTeX-формулы в очередь.
-   *
-   * Шаги:
-   *  1. Генерирует хэш
-   *  2. Проверяет существование SVG (кэш)
-   *  3. Запускает pdflatex
-   *  4. Конвертирует PDF → SVG
-   *  5. Нормализует SVG
-   *
-   * Компиляция выполняется через общую очередь.
-   *
-   * @param {string} latex - LaTeX-код
-   * @param {boolean} isInline - Inline или блок
-   * @param {string} srcFile - Исходный файл
-   * @returns {Promise<string>} Хэш SVG
-   */
-  return new Promise((resolve, reject) => {
-
-    compileQueue.push(async () => {
-      try {
-        ensureDir(MATH_TMP_DIR);
-        ensureDir(MATH_SVG_DIR);
-
-        const body = isInline
-          ? `$${latex}$`
-          : `\\[\n${latex}\n\\]`;
-
-        const hash = sha1(body);
-
-        const texFile = path.join(MATH_TMP_DIR, `${hash}.tex`);
-        const pdfFile = path.join(MATH_TMP_DIR, `${hash}.pdf`);
-        const svgFile = path.join(MATH_SVG_DIR, `${hash}.svg`);
-
-        if (fs.existsSync(svgFile)) {
-          resolve(hash);
-          return;
-        }
-
-        const tex = `
-\\documentclass[border=2pt, varwidth]{standalone}
-\\usepackage{amsmath}
-\\usepackage{amssymb}
-\\usepackage{amsfonts}
-\\usepackage{mathtools}
-\\usepackage[T2A]{fontenc}
-\\usepackage[utf8]{inputenc}
-\\usepackage[american,russian]{babel}
-\\begin{document}
-${body}
-\\end{document}
-`;
-
-        fs.writeFileSync(texFile, tex);
-
-        await execAsync(
-          `pdflatex -interaction=batchmode -output-directory="${MATH_TMP_DIR}" "${texFile}"`
-        );
-        await execAsync(`pdf2svg "${pdfFile}" "${svgFile}"`);
-        
-        let svg = fs.readFileSync(svgFile, "utf8");
-        svg = normalizeMathSVG(svg);
-        svg = uniquifySVG(svg, hash);
-
-        if (fs.existsSync(svgFile)) {
-          const oldSvg = fs.readFileSync(svgFile, "utf8");
-          if (oldSvg === svg) {
-            return hash;
-            }
-        }
-        fs.writeFileSync(svgFile, svg);
-
-        console.log("Math LaTeX compile success:", svgFile, body);
-
-        resolve(hash);
-
-      } catch (err) {
-        console.error("Math LaTeX compile error:");
-        console.error("file:", srcFile);
-        console.error("latex:", latex);
-        reject(err);
-      }
-    });
-
-    runCompileQueue();
-  });
-}
-
-
 /* ================= TikZ Rendering ================= */
 function normalizeTikzSVG(svg) {
   /**
@@ -327,92 +233,193 @@ function normalizeTikzSVG(svg) {
     .replace(/\sheight="[^"]+"/, '')
     .replace(/fill="rgb\(0%,\s*0%,\s*0%\)"/g, 'fill="currentColor"')
     .replace(/stroke="rgb\(0%,\s*0%,\s*0%\)"/g, 'stroke="currentColor"')
-    .replace(/<svg([^>]*)>/, '<svg$1 preserveAspectRatio="xMidYMid meet">')  
+    .replace(/<svg([^>]*)>/, '<svg$1 preserveAspectRatio="xMidYMid meet">') 
     ;
 }
 
-
-function compileTikz(code, hash, srcFile) {
+async function compileLatex(code, options = {}, srcFile = "") {
   /**
-   * compileTikz
-   * Добавляет задачу компиляции TikZ в очередь.
+   * compileLatex
+   * Универсальная компиляция LaTeX → SVG
    *
-   * Шаги:
-   *  1. Генерирует .tex
-   *  2. Запускает pdflatex
-   *  3. Конвертирует PDF → SVG
-   *  4. Нормализует SVG
+   * Поддерживает:
+   *  - math (inline / block)
+   *  - tikz
+   *  - таблицы
+   *  - любой LaTeX
    *
-   * Использует общую очередь компиляции,
-   * чтобы избежать параллельных вызовов pdflatex.
-   *
-   * @param {string} code - TikZ-код
-   * @param {string} hash - Хэш блока
-   * @param {string} srcFile - Файл-источник
-   * @returns {Promise<string>} Хэш SVG
+   * @param {string} code - LaTeX код
+   * @param {object} options
+   * @param {"math"|"tikz"|"block"} options.mode
+   * @param {boolean} options.inline
+   * @param {string[]} options.packages
+   * @param {string} srcFile
    */
-  return new Promise((resolve, reject) => {
 
+  const {
+    mode = "block",
+    inline = false,
+    packages = []
+  } = options;
+
+  return new Promise((resolve, reject) => {
     compileQueue.push(async () => {
       try {
-        ensureDir(TIKZ_TMP_DIR);
-        ensureDir(TIKZ_SVG_DIR);
-        
-        const texFile = path.join(TIKZ_TMP_DIR, `${hash}.tex`);
-        const pdfFile = path.join(TIKZ_TMP_DIR, `${hash}.pdf`);
-        const svgFile = path.join(TIKZ_SVG_DIR, `${hash}.svg`);
-        const srcDir = path.dirname(srcFile);
+        ensureDir(LATEX_TMP_DIR);
+        ensureDir(LATEX_SVG_DIR);
+
+        // ---- BODY ----
+        let body;
+
+        if (mode === "math") {
+          body = inline ? `$${code}$` : `\\[\n${code}\n\\]`;
+        } else {
+          body = code;
+        }
+
+        // ---- AUTO PACKAGES ----
+        const autoPackages = new Set(packages);
+        const autoTikzLibs = new Set([]);
+
+        const isTikz =
+          mode === "tikz" ||
+          body.includes("\\begin{tikzpicture}");
+
+        const isMath = mode === "math";
+        const isBlock = mode === "block";
+          
+        if (isTikz) {
+          autoPackages.add("tikz");
+
+          [
+            "positioning",
+            "shapes",
+            "shadows",
+            "arrows",
+            "arrows.meta",
+            "calc",
+            "fit",
+            "automata",
+            "bending",
+            "decorations.pathreplacing"
+          ].forEach(lib => autoTikzLibs.add(lib));
+        }
+
+        // ---- IMAGES ----
+        if (body.includes("\\includegraphics")) {
+          autoPackages.add("graphicx");
+        }
+
+        // ---- TABLES ----
+        if (body.includes("\\begin{tabular}")) {
+          autoPackages.add("array");
+          autoPackages.add("booktabs");
+        }
+        if (body.includes("\\multirow")) {
+          autoPackages.add("multirow");
+        }
+
+        // ---- HASH ----
+        const hash = sha1(
+          JSON.stringify({
+            body,
+            mode,
+            inline,
+            packages: [...autoPackages].sort()
+          })
+        );
+
+        const texFile = path.join(LATEX_TMP_DIR, `${hash}.tex`);
+        const pdfFile = path.join(LATEX_TMP_DIR, `${hash}.pdf`);
+        const svgFile = path.join(LATEX_SVG_DIR, `${hash}.svg`);
 
         if (fs.existsSync(svgFile)) {
           resolve(hash);
           return;
         }
 
+        // ---- DOCUMENTCLASS ----
+        const documentClass = isTikz
+          ? "\\documentclass[tikz,border=2pt]{standalone}"
+          : isMath
+            ? "\\documentclass[border=2pt,varwidth]{standalone}"
+            : "\\documentclass[border=2pt,varwidth]{standalone}";
+  
+        // ---- PACKAGES STRING ----
+        const pkgString = [...autoPackages]
+          .map(p => `\\usepackage{${p}}`)
+          .join("\n");
+
+        // ---- LIBRARIES STRING ----
+        const tikzLibString = autoTikzLibs.size
+          ? `\\usetikzlibrary{${[...autoTikzLibs].join(",")}}`
+          : "";  
+
+        // ---- TEMPLATE ----
         const tex = `
-\\documentclass[tikz,border=2pt]{standalone}
-\\usepackage{tikz}
+${documentClass}
+
+\\usepackage{amsmath}
+\\usepackage{amssymb}
+\\usepackage{amsfonts}
+\\usepackage{mathtools}
+
 \\usepackage[T2A]{fontenc}
 \\usepackage[utf8]{inputenc}
 \\usepackage[american,russian]{babel}
-\\usetikzlibrary{positioning,shapes,shadows,arrows,arrows.meta}
-\\usetikzlibrary{datavisualization, datavisualization.formats.functions}
-\\usetikzlibrary{calc} % для позиционирования на картинках
-\\usetikzlibrary{tikzmark}
-\\usetikzlibrary{bending,fit,automata}
-\\usetikzlibrary{decorations.pathreplacing}
+
+${pkgString}
+${tikzLibString}
+
 \\begin{document}
-${code}
+${body}
 \\end{document}
 `;
 
         fs.writeFileSync(texFile, tex);
-
+        const srcDir = path.dirname(srcFile);
+        // ---- COMPILE ----
         await execAsync(
-          `pdflatex -interaction=batchmode -output-directory="${TIKZ_TMP_DIR}" "${texFile}"`,
-          { stdio: "inherit", 
-            env: { ...process.env, TEXINPUTS: `${srcDir}${path.delimiter}${process.env.TEXINPUTS || ""}` }}
+          `pdflatex -interaction=batchmode -output-directory="${LATEX_TMP_DIR}" "${texFile}"`,
+          {
+            env: {
+              ...process.env,
+              TEXINPUTS: `${srcDir}${path.delimiter}${process.env.TEXINPUTS || ""}`
+            }
+          }
         );
 
-        await execAsync(`pdf2svg "${pdfFile}" "${svgFile}"`, { stdio: "inherit" });
+        await execAsync(`pdf2svg "${pdfFile}" "${svgFile}"`);
 
-        let svg = fs.readFileSync(svgFile, 'utf8');
-        svg = normalizeTikzSVG(svg);
+        // ---- SVG NORMALIZATION ----
+        let svg = fs.readFileSync(svgFile, "utf8");
+
+        if (isTikz) {
+          svg = normalizeTikzSVG(svg);
+        } else if (isMath) {
+          svg = normalizeMathSVG(svg);
+        } else {
+          svg = normalizeLatexSVG(svg);
+        }
+
         svg = uniquifySVG(svg, hash);
+
         fs.writeFileSync(svgFile, svg);
 
-        console.log("TikZ LaTeX compile success:", svgFile);
+        console.log("LaTeX compile success:", svgFile);
 
-        resolve(hash)
+        resolve(hash);
+
       } catch (err) {
-        console.error("TikZ LaTeX compile error:");
+        console.error("LaTeX compile error:");
         console.error("file:", srcFile);
         console.error("code:", code);
-        reject(err)
+        reject(err);
       }
-    })
+    });
 
-    runCompileQueue()
-  })
+    runCompileQueue();
+  });
 }
 
 /* ================= Markdown Processor ================= */
@@ -435,24 +442,77 @@ async function processMarkdown(srcFile, dstFile) {
    */
   let text = fs.readFileSync(srcFile, "utf8");
 
+  // ===== 1. LATEX BLOCK (универсальный) =====
+  text = await replaceAsync(text, LATEX_BLOCK_RE, async (match, attrStr = "", code) => {
+    code = code.trim();
+
+    // --- парсинг атрибутов ---
+    const attrs = {};
+    attrStr.split(/\s+/).forEach(tok => {
+      if (!tok) return;
+      const eq = tok.indexOf("=");
+      if (eq !== -1) {
+        const key = tok.slice(0, eq);
+        let val = tok.slice(eq + 1);
+        val = val.replace(/^["']|["']$/g, "");
+        attrs[key] = val;
+      } else if (tok === "inline") {
+        attrs.inline = "true";
+      }
+    });
+
+    // --- packages ---
+    const packages = attrs.packages
+      ? attrs.packages.split(",").map(s => s.trim()).filter(Boolean)
+      : [];
+
+    const inline = attrs.inline === "true";
+
+    const hash = await compileLatex(code, {
+      mode: "block",
+      inline,
+      packages
+    }, srcFile);
+
+    // --- shortcode output ---
+    let sc = `{{< latex hash="${hash}"`;
+    if (inline) sc += ` inline="true"`;
+    if (attrs.width) sc += ` width="${attrs.width}"`;
+    if (attrs.height) sc += ` height="${attrs.height}"`;
+    sc += ` />}}`;
+
+    return sc;
+  });
+
   // ----- Блоковая математика -----
   text = await replaceAsync(text, BLOCK_MATH, async (match, latex) => {
-    return await renderMath(latex.trim(), srcFile, false);
+    //return await renderMath(latex.trim(), srcFile, false);
+    const hash = await compileLatex(latex.trim(), {
+      mode: "math",
+      inline: false
+    }, srcFile);
+    
+    return `{{< tex hash="${hash}" />}}`;
   });
 
   // ----- Inline математика -----
   text = await replaceAsync(text, INLINE_MATH, async (match, latex) => {
-    return await renderMath(latex.trim(), srcFile, true);
+    //return await renderMath(latex.trim(), srcFile, true);
+    const hash = await compileLatex(latex.trim(), {
+      mode: "math",
+      inline: true
+    }, srcFile);
+
+    return `{{< tex hash="${hash}" inline="true" />}}`;
   });
 
   // ----- TikZ -----
   text = await replaceAsync(text, TIKZ_RE, async (match, attrStr = "", code) => {
     code = code.trim();
 
-    const hash = sha1(code);
-
-    // ВАЖНО: await!
-    await compileTikz(code, hash, srcFile);
+    const hash = await compileLatex(code, {
+      mode: "tikz"
+    }, srcFile);
 
     // --- Парсинг атрибутов ---
     const attrs = {};
@@ -535,8 +595,9 @@ function watch() {
   interval: 2000,
   ignored: [
     /(^|[\/\\])\../,
-    MATH_SVG_DIR,
-    TIKZ_SVG_DIR,
+    //MATH_SVG_DIR,
+    //TIKZ_SVG_DIR,
+    LATEX_SVG_DIR,
     BUILD_CONTENT
   ]
   });
@@ -557,8 +618,7 @@ function watch() {
 
 async function main() {
   ensureDir(BUILD_CONTENT);
-  ensureDir(MATH_SVG_DIR);
-  ensureDir(TIKZ_SVG_DIR);
+  ensureDir(LATEX_SVG_DIR);
 
   if (process.argv.includes("--watch")) {
     await walk(SRC_CONTENT);
