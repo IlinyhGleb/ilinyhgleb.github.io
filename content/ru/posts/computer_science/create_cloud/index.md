@@ -1,6 +1,6 @@
 +++
-date = '2026-03-30T08:00:00+05:00'
-draft = true
+date = '2026-04-02T08:00:00+05:00'
+draft = false
 title = 'Создание папки в облачном хранилище'
 tags = ["informatika"]
 categories = ["informatika"]

@@ -4,7 +4,7 @@ draft = true
 title = 'Тестовый пост для проверки функциональностей'
 +++
 
-Проверяются: Tikz, Latex, Video, Скрывающийся текст, Диаграммы, ссылки, svg, код, таблица
+*Проверяются: Tikz, Latex, Video, Скрывающийся текст, Диаграммы, ссылки, svg, код, таблица*
 
 <!--more-->
 
@@ -31,10 +31,15 @@ $$ z(x)=\begin{cases}1 \\ 2 \\ 3 \\ 4 \end{cases} $$
 
 $$ z(x)=\begin{cases}\sin x, \quad x<0 \\ e^x, \quad 0 \le x<1 \\ e, \quad x \ge 1 \end{cases} $$
 
-$$f(x)=\begin{cases}x^2-1, \quad x>=1 \\ 0, \quad x<1\end{cases}$$
+$$f(x)=\begin{cases}x^2-1, \quad x \ge 1 \\ 0, \quad x<1\end{cases}$$
+
 ## Video
 
 {{< media/video src="/videos/ansys/wb/create_cube_dm.mkv" width="600" >}}
+
+## Audio
+
+{{< media/audio src="/audio/computer_science/nature.mp3" caption="nature" >}}
 
 ## Скрывающийся текст
 
@@ -140,6 +145,7 @@ graph LR;
     \draw[->] (shape) -- (rectangle);
 \end{tikzpicture}
 {{< /tikz >}}
+
 
 Круг, нарисованный в TikZ:
 {{< tikz >}}
@@ -340,7 +346,22 @@ graph LR;
 \end{tikzpicture}
 {{< /tikz >}}
    
+## Latex в общем
+### Таблицы
 
+Рекомендуется не использовать `table`, а только `tabular`
+
+{{< latex packages="array,booktabs" >}}
+    \begin{tabular}{|l|l|l|ll|}
+    \hline
+    &  &  & \multicolumn{2}{l|}{}                     \\ \hline
+    &  &  & \multicolumn{1}{l|}{}                  &  \\ \hline
+    &  &  & \multicolumn{1}{l|}{}                  &  \\ \hline
+    &  &  & \multicolumn{1}{l|}{}                  &  \\ \hline
+    &  &  & \multicolumn{1}{l|}{\multirow{2}{*}{}} &  \\ \cline{1-3} \cline{5-5} 
+    &  &  & \multicolumn{1}{l|}{}                  &  \\ \hline
+    \end{tabular}
+{{< /latex >}}
 
 ## Код
 
