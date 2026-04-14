@@ -41,17 +41,21 @@
 {{- end }}
 
 {{- /* Styles */}}
+{{- $blank := resources.FromString "includes-blank.css" "" -}}
+{{- $scroll := resources.Get "css/includes/scroll-bar.css" -}}
+{{- $includes := resources.Get "css/includes.css" -}}
 
-{{- /* includes */}}
-{{- $includes := slice }}
-{{- $includes = $includes | append (" " | resources.FromString "assets/css/includes-blank.css")}}
+{{- /* initialize a resources.Resources object */ -}}
+{{- $includes_all := $blank -}}
 
-{{- if not (eq site.Params.assets.disableScrollBarStyle true) }}
-    {{- $ScrollStyle := (resources.Get "css/includes/scroll-bar.css") }}
-    {{- $includes = (append $ScrollStyle $includes) }}
-{{- end }}
-
-{{- $includes_all := $includes | resources.Concat "assets/css/includes.css" }}
+{{- if $scroll }}
+    {{- /* concat individually, no slice */ -}}
+    {{- $includes_all = resources.Concat $blank $scroll  -}}
+{{- else if $includes }}
+    {{- $includes_all = resources.Concat $blank $includes -}}
+{{- else }}
+    {{- $includes_all = $blank -}}
+{{- end -}}
 
 {{- $theme_vars := (resources.Get "css/core/theme-vars.css") }}
 {{- $reset := (resources.Get "css/core/reset.css") }}
@@ -64,7 +68,8 @@
 {{- $chroma_mod := (resources.Get "css/includes/chroma-mod.css") }}
 
 {{- /* order is important */}}
-{{- $core := (slice $theme_vars $reset $common $chroma_styles $chroma_mod $includes_all $media) | resources.Concat "assets/css/core.css" | resources.Minify }}
+{{- $header_css := resources.Get "css/core/header.css" -}}
+{{- $core := (slice $theme_vars $reset $common $chroma_styles $chroma_mod $includes_all $media $header_css) | resources.Concat "assets/css/core.css" | resources.Minify }}
 {{- $extended := (resources.Match "css/extended/*.css") | resources.Concat "assets/css/extended.css" | resources.Minify }}
 
 {{- /* bundle all required css */}}
