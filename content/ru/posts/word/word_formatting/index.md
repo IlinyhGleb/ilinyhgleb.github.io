@@ -280,7 +280,7 @@ courses = ["informatika"]
 {{</details>}}
 
 
-2. Скачайте шаблон : {{< download file="/files/word_formatting_template.pdf" label="Файл шаблона" >}}
+2. Скачайте шаблон : {{< download file="/files/word_formatting_template.docx" label="Файл шаблона" >}}
 
 3. Оформите (настройки шрифтов и абзацев) в соответствии с шаблоном.
 
