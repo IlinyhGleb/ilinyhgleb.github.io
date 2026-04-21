@@ -112,10 +112,10 @@ courses = ["informatika"]
 	]
 
 	\node[img] (img1) at (0,0) {\includegraphics[width=12cm, trim=0 6.4cm 0 0, clip]{image2.png}};
-	\node[pnl] (pnl1) at (-2,1.0) {\includegraphics[width=8cm]{panel3.png}};
-	\node[pnl] (prg1) at (9.2,1.0) {\includegraphics[width=6cm]{paragraph1.png}};
-	\node[pnl] (prg2) at (9.2,-6.5) {\includegraphics[width=6cm]{paragraph2.png}};
-	\node[pnl] (pnl2) at (7.2,-14.0) {\includegraphics[width=8cm]{panel4.png}};
+	\node[pnl] (pnl1) at (-2,1.0) {\includegraphics[width=8cm, trim=0 0 0 0, clip]{panel3.png}};
+	\node[pnl] (prg1) at (9.2,1.0) {\includegraphics[width=6cm, trim=0 0 0 0, clip]{paragraph1.png}};
+	\node[pnl] (prg2) at (9.2,-6.5) {\includegraphics[width=6cm, trim=0 0 0 0, clip]{paragraph2.png}};
+	\node[pnl] (pnl2) at (7.2,-14.0) {\includegraphics[width=8cm, trim=0 0 0 0, clip]{panel4.png}};
 
 	\node[lbl] (lbl1) at (-2.0, -.6) {Times New Roman, 14~пт, выравнивание по ширине};
 	\node[lbl] (lbl2) at (-2.0, -3.0) {Lucida Console, 14~пт, выравнивание по центру};
@@ -193,9 +193,9 @@ courses = ["informatika"]
 	]
 
 	\node[img] (img1) at (0,0) {\includegraphics[width=12cm, trim=0 0 0 0, clip]{image4.png}};
-	\node[pnl] (pnl1) at (6.5,0.0) {\includegraphics[width=7cm]{panel5.png}};
-	\node[pnl] (pnl2) at (-2,-9.7) {\includegraphics[width=6cm]{panel6.png}};
-	\node[pnl] (prg1) at (7.5,-5.0) {\includegraphics[width=6cm]{paragraph3.png}};
+	\node[pnl] (pnl1) at (6.5,0.0) {\includegraphics[width=7cm, trim=0 0 0 0, clip]{panel5.png}};
+	\node[pnl] (pnl2) at (-2,-9.7) {\includegraphics[width=6cm, trim=0 0 0 0, clip]{panel6.png}};
+	\node[pnl] (prg1) at (7.5,-5.0) {\includegraphics[width=6cm, trim=0 0 0 0, clip]{paragraph3.png}};
 
 	\node[lbl] (lbl1) at (-2, -4) {Courier New, Курсив, 12~пт};
 	\node[lbl] (lbl2) at (4.4, -12.5) {Настройка отступов};
