@@ -1,6 +1,7 @@
 +++
 date = '2026-04-23T08:00:00+05:00'
 title = 'Редактор текстовых документов. Таблицы'
+draft = true
 tags = ["Информатика", "Word"]
 categories = ["informatika"]
 courses = ["informatika"]
