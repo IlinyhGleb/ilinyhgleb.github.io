@@ -1,10 +1,12 @@
 +++
-date = '2026-11-12T08:00:00+05:00'
+date = '2026-04-24T08:00:00+05:00'
 draft = false
 title = 'Правила работы с репозиторием GIT'
 tags = ["GIT"]
 categories = ['Разработка проектов']
 +++
+
+В посте преставлены правила создания и именования веток и коммитов в Git репозитории проекта.
 
 <!--more-->
 
@@ -41,7 +43,7 @@ categories = ['Разработка проектов']
 	feature(build): add docker support
 	feature(git): add commit message template
 {{</details>}}
-{{<details summary="`fix` - исправление ошибки:">}}
+{{<details summary="`fix` - исправление ошибки">}}
 	fix(core): handle None value in parser
 	fix(backend): correct response status code
 	fix(frontend): fix button alignment issue
