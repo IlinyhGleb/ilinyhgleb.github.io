@@ -84,8 +84,8 @@ function normalizeLatexSVG(svg) {
    * @returns {string} Нормализованный SVG
    */
   return svg
-    .replace(/fill="[^"]*"/g, 'fill="currentColor"')
-    .replace(/stroke="[^"]*"/g, 'stroke="currentColor"')
+    .replace(/fill="rgb\(0%,\s*0%,\s*0%\)"/g, 'fill="currentColor"')
+    .replace(/stroke="rgb\(0%,\s*0%,\s*0%\)"/g, 'stroke="currentColor"')
     ;
 }
 
@@ -279,6 +279,7 @@ async function compileLatex(code, options = {}, srcFile = "") {
 
         // ---- AUTO PACKAGES ----
         const autoPackages = new Set(packages);
+        const autoPackagesWithOptions = new Map(); // package -> options
         const autoTikzLibs = new Set([]);
 
         const isTikz =
@@ -314,6 +315,9 @@ async function compileLatex(code, options = {}, srcFile = "") {
         if (body.includes("\\begin{tabular}")) {
           autoPackages.add("array");
           autoPackages.add("booktabs");
+
+          // support for \rowcolors, \cellcolor, \columncolor
+          autoPackagesWithOptions.set("xcolor", "table,xcdraw");
         }
         if (body.includes("\\multirow")) {
           autoPackages.add("multirow");
@@ -325,7 +329,10 @@ async function compileLatex(code, options = {}, srcFile = "") {
             body,
             mode,
             inline,
-            packages: [...autoPackages].sort()
+            packages: {
+            normal: [...autoPackages].sort(),
+            withOptions: [...autoPackagesWithOptions.entries()].sort()
+          }
           })
         );
 
@@ -343,12 +350,18 @@ async function compileLatex(code, options = {}, srcFile = "") {
           ? "\\documentclass[tikz,border=2pt]{standalone}"
           : isMath
             ? "\\documentclass[border=2pt,varwidth]{standalone}"
-            : "\\documentclass[border=2pt,varwidth]{standalone}";
+            : "\\documentclass[border=2pt,varwidth=\\maxdimen]{standalone}";
   
         // ---- PACKAGES STRING ----
-        const pkgString = [...autoPackages]
-          .map(p => `\\usepackage{${p}}`)
-          .join("\n");
+        const pkgString = [
+          ...[...autoPackages].map(
+            p => `\\usepackage{${p}}`
+          ),
+
+          ...[...autoPackagesWithOptions.entries()].map(
+            ([pkg, opts]) => `\\usepackage[${opts}]{${pkg}}`
+          )
+        ].join("\n");
 
         // ---- LIBRARIES STRING ----
         const tikzLibString = autoTikzLibs.size
