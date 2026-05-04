@@ -321,6 +321,7 @@ async function compileLatex(code, options = {}, srcFile = "") {
         }
         if (body.includes("\\multirow")) {
           autoPackages.add("multirow");
+          autoPackages.add("makecell");
         }
 
         // ---- HASH ----
