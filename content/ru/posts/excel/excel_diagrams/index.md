@@ -775,7 +775,7 @@ courses = ["informatika"]
 		font=\fontsize{10pt}{10pt}\selectfont,
 		align=left,
 		text=red!70!black,
-		text width=2.4cm,
+		text width=7.2cm,
 		execute at begin node={\hyphenpenalty=10000\relax}  % для исключения переносов слов через тире
 		},
 		arrow/.style={
@@ -790,14 +790,21 @@ courses = ["informatika"]
 		\node[img] (img1) at (-5,0) {\includegraphics[width=10cm, trim={0 0 0 0cm}, clip]{excel_diagrams_18.png}};
 					
 		\node[frm, minimum width=4.35cm, minimum height=0.4cm] (frm3) at (0.4,-3.55) {};
-		\node[frm, minimum width=1.7cm, minimum height=0.4cm] (frm4) at (6.5,-2.3) {};
+		\node[frm, minimum width=1.7cm, minimum height=0.4cm] (frm4) at (5.05,-2.3) {};
 		\node[frm, minimum width=6.0cm, minimum height=3.55cm] (frm5) at (5.05,-6.3) {};
+		\node[frm, minimum width=0.5cm, minimum height=4.0cm] (frm6) at (-4.625,-1.3) {};
+		\node[frm, minimum width=4.4cm, minimum height=0.5cm] (frm7) at (-4.075,-5.1) {};
 		
-		%\node[lbl] (lbl1) at (10.1, -.2) {Название диаграммы};
-		%\node[lbl] (lbl2) at (10.1, -5.) {Легенда};
+		\node[lbl] (lbl1) at (-4.5, -6.9) {Выберите ячейку с названием кривой};
+		\node[lbl] (lbl2) at (-4.5, -7.8) {Выберите диапазон ячеек со значениями на горизонтальной оси};
+		\node[lbl] (lbl3) at (-4.5, -9.0) {Выберите диапазон ячеек со значениями на вертикальной оси};
 
-		%\draw[arrow] (lbl1.west) -- (frm1.east);
-		%\draw[arrow] (lbl2.west) -- (frm2.south);
+		\draw[arrow] (lbl1.east) -- ([yshift=25pt]frm5.west);
+		\draw[arrow] (lbl2.east) -- ([yshift=-5pt]frm5.west);
+		\draw[arrow] (lbl3.east) -- ([yshift=-40pt]frm5.west);
+
+		\draw[arrow] (lbl3.west) to[out=180, in=190] (frm6.west);
+		\draw[arrow] (lbl2.west) to[out=170, in=190] (frm7.south west);
 
 		% вспомогательная сетка:
 		%\draw[help lines] (-1,0) grid (12,-4);
