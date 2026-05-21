@@ -291,6 +291,7 @@ async function compileLatex(code, options = {}, srcFile = "") {
           
         if (isTikz) {
           autoPackages.add("tikz");
+          autoPackages.add("schemabloc");
 
           [
             "positioning",
@@ -302,7 +303,9 @@ async function compileLatex(code, options = {}, srcFile = "") {
             "fit",
             "automata",
             "bending",
-            "decorations.pathreplacing"
+            "decorations.pathreplacing",
+            "circuits",
+            "patterns",
           ].forEach(lib => autoTikzLibs.add(lib));
         }
 
