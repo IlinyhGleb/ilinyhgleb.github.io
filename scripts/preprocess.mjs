@@ -306,6 +306,8 @@ async function compileLatex(code, options = {}, srcFile = "") {
             "decorations.pathreplacing",
             "circuits",
             "patterns",
+            "datavisualization",
+            "datavisualization.formats.functions",
           ].forEach(lib => autoTikzLibs.add(lib));
         }
 
@@ -318,6 +320,7 @@ async function compileLatex(code, options = {}, srcFile = "") {
         if (body.includes("\\begin{tabular}")) {
           autoPackages.add("array");
           autoPackages.add("booktabs");
+          autoPackages.add("color,colortbl");
 
           // support for \rowcolors, \cellcolor, \columncolor
           autoPackagesWithOptions.set("xcolor", "table,xcdraw");
