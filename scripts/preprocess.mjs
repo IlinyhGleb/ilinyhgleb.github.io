@@ -596,6 +596,49 @@ async function walk(dir) {
 
 /* ================= Watch ================= */
 
+const DEBOUNCE_MS = 1000;
+
+let timer = null;
+let isProcessing = false;
+let needsRerun = false;
+
+const pendingFiles = new Set();
+
+async function runUpdates() {
+  if (isProcessing) {
+    needsRerun = true;
+    return;
+  }
+
+  isProcessing = true;
+
+  try {
+    while (pendingFiles.size > 0) {
+      const files = [...pendingFiles];
+      pendingFiles.clear();
+
+      for (const file of files) {
+        await processFile(file);
+      }
+
+      if (!needsRerun) break;
+      needsRerun = false;
+    }
+  } finally {
+    isProcessing = false;
+  }
+}
+
+function scheduleUpdate(file) {
+  pendingFiles.add(file);
+
+  clearTimeout(timer);
+
+  timer = setTimeout(() => {
+    runUpdates().catch(console.error);
+  }, DEBOUNCE_MS);
+}
+
 function watch() {
   /**
    * watch
@@ -610,16 +653,16 @@ function watch() {
    * без полного пересканирования.
    */
   const watcher = chokidar.watch(SRC_CONTENT, {
-  ignoreInitial: true,
-  usePolling: true,
-  interval: 2000,
-  ignored: [
-    /(^|[\/\\])\../,
-    //MATH_SVG_DIR,
-    //TIKZ_SVG_DIR,
-    LATEX_SVG_DIR,
-    BUILD_CONTENT
-  ]
+    ignoreInitial: true,
+    usePolling: true,
+    interval: 2000,
+    ignored: [
+      /(^|[\/\\])\../,
+      //MATH_SVG_DIR,
+      //TIKZ_SVG_DIR,
+      LATEX_SVG_DIR,
+      BUILD_CONTENT
+    ]
   });
 
   watcher.on("all", (event, file) => {
