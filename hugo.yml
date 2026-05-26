@@ -1,19 +1,17 @@
 baseURL: 'https://ilinyhgleb.github.io/'
-languageCode: 'ru-ru'
+locale: 'ru-ru'
 
 defaultContentLanguage: ru
 defaultContentLanguageInSubdir: false
 languages:
   ru:
-    languageCode: ru-RU
-    languageName: Русский
+    locale: ru-RU
     contentDir: '.build/content/ru'
     weight: 1
     title: 'Блог Ильиных Глеба'
 
   en:
-    languageCode: en-US
-    languageName: English
+    locale: en-US
     contentDir: '.build/content/en'
     weight: 2
     title: "Gleb Ilinyh's Blog"
