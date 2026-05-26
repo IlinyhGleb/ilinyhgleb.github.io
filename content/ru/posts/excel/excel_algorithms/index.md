@@ -26,6 +26,8 @@ courses = ["informatika"]
 
 **Задача:** посчитать площадь круга по известной длине окружности
 
+Напишем алгоритм решения данной задачи в различных формах представления:
+
 #### 1. **Словестное** представление алгоритма:
 Для того, чтобы посчитать площадь круга, необходимо вычислить радиус как длину, поделённую на \(2 \pi\). Затем нужно возвести радиус в квадрат и умножить на \(\pi\).
 
@@ -62,6 +64,9 @@ $$S=\pi r^2=\pi (L / 2\pi)^2$$
 	\end{tikzpicture}
 {{< /tikz >}}
 
+#### Самостоятельное задание
+
+Реализуйте вычисление данного алгоритма в электронных таблицах
 
 ## Типы алгоритмов 
 
@@ -446,16 +451,33 @@ $$ z(x) = \begin{cases} -x-1, \quad x \le -1 \\ x-1, \quad x \ge 1 \\ -x^2+1, \q
 Результаты различных комбинаций значений `ПРАВДА` (True, T) и `ЛОЖЬ` (False, F) представлены в таблице истинности:
 
 {{< latex >}}
-\begin{tabular}{|>{\centering\arraybackslash}p{1.2cm}|>{\centering\arraybackslash}p{1.2cm}||>{\centering\arraybackslash}p{2.4cm}|>{\centering\arraybackslash}p{2.4cm}|>{\centering\arraybackslash}p{2.4cm}|>{\centering\arraybackslash}p{2.4cm}|>{\centering\arraybackslash}p{2.4cm}|}
- 	\hline
-	$A$ & $B$ & {\normalsize не $A$} & {\normalsize и $A$, и $B$} & {\normalsize или $A$, или $B$} & {\normalsize $A$ равно $B$} & {\normalsize $A$ не равно $B$} \\ \hline
-	$A$ & $B$ & $-A$ & $A \& B$ & $A | B$ & $A==B$ & $A!=B$ \\ \hline
-	$A$ & $B$ & $not~A$ & $A~and~B$ & $A~or~B$ & $A~is~B$ & $A~is~not~B$ \\ \hline
-	\cellcolor{green!20} $T$ & \cellcolor{green!20} $T$ & \cellcolor{red!20} $F$ & \cellcolor{green!20} $T$ & \cellcolor{green!20} $T$ & \cellcolor{green!20} $T$ & \cellcolor{red!20} $F$ \\ \hline
-	\cellcolor{green!20} $T$ & \cellcolor{red!20} $F$ & \cellcolor{red!20} $F$ & \cellcolor{red!20} $F$ & \cellcolor{green!20} $T$ & \cellcolor{red!20} $F$ & \cellcolor{green!20} $T$ \\ \hline
-	\cellcolor{red!20} $F$ & \cellcolor{green!20} $T$ & \cellcolor{green!20} $T$ & \cellcolor{red!20} $F$ & \cellcolor{green!20} $T$ & \cellcolor{red!20} $F$ & \cellcolor{green!20} $T$ \\ \hline
-	\cellcolor{red!20} $F$ & \cellcolor{red!20} $F$ & \cellcolor{green!20} $T$ & \cellcolor{red!20} $F$ & \cellcolor{red!20} $F$ & \cellcolor{green!20} $T$ & \cellcolor{red!20} $F$ \\ \hline
-	\end{tabular}
+	\begingroup % Start local scope
+		% Local shortcuts for background colors (vanish after \endgroup)
+		\newcommand{\T}{\cellcolor{green!20} $T$}
+		\newcommand{\F}{\cellcolor{red!20} $F$}
+
+		% Optional: locally adjust row height & font size
+		\renewcommand{\arraystretch}{1.15}
+		\fontsize{16pt}{16pt}\selectfont
+
+		\begin{tabular}{
+			|>{\centering\arraybackslash}p{0.4cm}
+			|>{\centering\arraybackslash}p{0.4cm}|
+			|>{\centering\arraybackslash}p{1.4cm}
+			|>{\centering\arraybackslash}p{2.4cm}
+			|>{\centering\arraybackslash}p{3.6cm}
+			|>{\centering\arraybackslash}p{2.8cm}
+			|>{\centering\arraybackslash}p{3.6cm}|}
+			\hline
+			$A$ & $B$ & не $A$ & и $A$, и $B$ & или $A$, или $B$ & $A$ равно $B$ & $A$ не равно $B$ \\ \hline
+			$A$ & $B$ & $-A$ & $A \& B$ & $A | B$ & $A==B$ & $A!=B$ \\ \hline
+			$A$ & $B$ & $not~A$ & $A~and~B$ & $A~or~B$ & $A~is~B$ & $A~is~not~B$ \\ \hline
+			\T & \T & \F & \T & \T & \T & \F \\ \hline
+			\T & \F & \F & \F & \T & \F & \T \\ \hline
+			\F & \T & \T & \F & \T & \F & \T \\ \hline
+			\F & \F & \T & \F & \F & \T & \F \\ \hline
+		\end{tabular}
+	\endgroup % End local scope
 {{< /latex >}}
 
 Функция **НЕ**:
@@ -467,16 +489,16 @@ $$ z(x) = \begin{cases} -x-1, \quad x \le -1 \\ x-1, \quad x \ge 1 \\ -x^2+1, \q
 
 Операции **РАВНО** и **НЕ РАВНО** реализуются с помощью операторов:
 
-| **Функция** |        **Название**         |                                               **Описание**                                                | **Пример** |
-| :---------- | :-------------------------: | :-------------------------------------------------------------------------------------------------------: | :--------- |
-| =           |  логическая равнозначность  | Возвращает значение ИСТИНА, операнды равны друг другу. Возвращает ЛОЖЬ, если операнды не равны друг другу | =A1=B1     |
-| <>          | логическая неравнозначность | Возвращает значение ИСТИНА, операнды не равны друг другу. Возвращает ЛОЖЬ, если операнды равны друг другу | =B1<>5     |
+| **Операция** |        **Название**         |                                               **Описание**                                                | **Пример** |
+| :----------- | :-------------------------: | :-------------------------------------------------------------------------------------------------------: | :--------- |
+| =            |  логическая равнозначность  | Возвращает значение ИСТИНА, операнды равны друг другу. Возвращает ЛОЖЬ, если операнды не равны друг другу | =A1=B1     |
+| <>           | логическая неравнозначность | Возвращает значение ИСТИНА, операнды не равны друг другу. Возвращает ЛОЖЬ, если операнды равны друг другу | =B1<>5     |
 
 #### Самостоятельное задание
 
 Реализуйте примеры из таблиц в электронных таблицах.
 
-### Задача Попадание точки в область
+### Задача **Попадание точки в область**
 
 Отличной задачей для отработки навыков алгоритмизации явлется **задача попадания точки в область**.
 
@@ -484,7 +506,7 @@ $$ z(x) = \begin{cases} -x-1, \quad x \le -1 \\ x-1, \quad x \ge 1 \\ -x^2+1, \q
 
 Иллюстрация такого условия на примере фигуры треугольника:
 
-{{< tikz >}}
+{{< tikz  width="70%" >}}
 	\begin{tikzpicture} 
 		\datavisualization [school book axes, x axis=grid, y axis=grid, visualize as line/.list={area1,area2,area3},style sheet=strong colors,style sheet=vary dashing,
 		area1={style={solid, line width=1.9pt,visualizer color=blue!50}}, %, 	label in legend={text=область 1}
@@ -509,16 +531,69 @@ $$ z(x) = \begin{cases} -x-1, \quad x \le -1 \\ x-1, \quad x \ge 1 \\ -x^2+1, \q
 {{< /tikz >}}
 
 
-|                                                      | **Формула**      |
-| :--------------------------------------------------- | :--------------- |
-| Уравнение нижней линии:                              | \(y(x)=1\)       |
-| Уравнение левой линии:                               | \(x(y)=1\)       |
-| Уравнение гипотенузы:                                | \(y(x)=-x+7\)    |
-| Координаты точки:                                    | \((x_d,y_d)\)    |
-| Условие попадания в точку относительно нижней линии: | \(y_d\ge1\)      |
-| Условие попадания в точку относительно левой линии:  | \(x_d\ge1\)      |
-| Условие попадания в точку относительно гипотенузы:   | \(y_d\le-x_d+7\) |
+|                                                      | **Формула**      | 
+| :--------------------------------------------------- | :--------------- | 
+| Координаты точки:                                    | \((x_d,y_d)\)    | 
+| Уравнение нижней линии:                              | \(y(x)=1\)       | 
+| Уравнение левой линии:                               | \(x(y)=1\)       |  
+| Уравнение гипотенузы:                                | \(y(x)=-x+7\)    | 
+| Условие попадания в точку относительно нижней линии: | \(y_d\ge1\)      |  
+| Условие попадания в точку относительно левой линии:  | \(x_d\ge1\)      |  
+| Условие попадания в точку относительно гипотенузы:   | \(y_d\le-x_d+7\) |  
+
 
 1. Реализуйте проверку попадания произвольной точки в область. 
-2. Создайте диаграмму фигуры.
+2. Создайте диаграмму фигуры. Добавьте на диаграмму несколько точек и проверьте, попадают ли они в область.
 3. Составьте блок-схему алгоритма проверки попадания точки в область.
+
+
+### Задача **Попадание точки в область**
+
+Решите задачу попадания точки в область для областей:
+
+{{< tikz width="90%" >}}
+	\begin{tikzpicture} 
+		\datavisualization [
+			school book axes, 
+			x axis=grid, y axis=grid, visualize as line/.list={area1,area2},
+			style sheet=strong colors,
+			style sheet=vary dashing,
+			area1={style={solid, line width=1.1pt,visualizer color=blue!50}, label in legend={text=$area1$}},
+			area2={style={solid, line width=2.1pt,visualizer color=red!50}, label in legend={text=$area2$}},	
+			data/format=function
+		]
+		data [set=area2] {var x : interval [5:10]; func y = 0;} 
+		data [set=area2] {var t : interval [90:180]; func x = 10 + 5 * cos(\value t); func y = 5 * sin(\value t);} 
+		data [set=area2] {var y : interval [0:5];  func x = 10;} 
+		data [set=area1] {var x : interval [0:5];  func y = \value x;} 
+		data [set=area1] {var x : interval [5:8];  func y = -5/3*\value x +40/3;} 
+		data [set=area1] {var x : interval [0:8];  func y = 0;}; 
+	\end{tikzpicture}
+{{< /tikz >}}
+
+
+## Ключевые слова
+
+Добавьте слова в свой глоссарий
+
+| **Ключевое слово**          |
+| --------------------------- |
+| алгоритм                    |
+| блок-схема                  |
+| действие                    |
+| последовательность действий |
+| условие                     |
+| начало алгоритма            |
+| конец алгоритма             |
+| составное условие           |
+| сложное условие             |
+
+
+
+
+
+
+
+
+
+
