@@ -19,4 +19,6 @@ common:
     other: "Категории"
   search: 
     other: "Поиск"
+  newsite:
+    other: "Перейти на новый сайт: ilinyh.blog"
 

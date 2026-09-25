@@ -19,3 +19,5 @@ common:
     other: "Categories"
   search: 
     other: "Search"
+  newsite:
+    other: "Go to the new site: ilinyh.blog"

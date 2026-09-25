@@ -82,14 +82,16 @@ params:
     title: " "
     subtitle: ""
     buttons:
-      - id: courses
-        url: courses
-      - id: posts
-        url: posts
-      - id: search
-        url: search
-      - id: tags
-        url: tags
+      # - id: courses
+      #   url: courses
+      # - id: posts
+      #   url: posts
+      # - id: search
+      #   url: search
+      # - id: tags
+      #   url: tags
+      - id: newsite
+        url: "https://ilinyh.blog/"
 
   # socialIcons:
   #   - name: vk
